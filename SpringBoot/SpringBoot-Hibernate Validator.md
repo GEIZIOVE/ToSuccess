@@ -123,7 +123,6 @@ public class UserProfile {
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
         </dependency>
-
     </dependencies>
 ```
 
@@ -137,6 +136,17 @@ public class UserProfile {
     <artifactId>spring-boot-starter-validation</artifactId>
 </dependency>
 ```
+
+- 由于SpringBoot 2.3版本默认移除了校验功能，如果想要开启的话需要添加如下依赖。
+
+  ```xml
+  <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+  </dependency>
+  ```
+
+
 
 ### 2.2Application
 

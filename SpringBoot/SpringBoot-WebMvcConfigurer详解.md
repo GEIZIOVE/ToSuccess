@@ -162,7 +162,7 @@ public void addInterceptors(InterceptorRegistry registry) {
 
 
 
-### 12.2 addViewControllers：页面跳转
+### 2.2 addViewControllers：页面跳转
 
 以前写SpringMVC的时候，如果需要访问一个页面，必须要写Controller类，然后再写一个方法跳转到页面，感觉好麻烦，其实重写`WebMvcConfigurer`中的`addViewControllers`方法即可达到效果了
 
@@ -227,6 +227,8 @@ public void enableContentNegotiation(View... defaultViews) {
 ```
 
 ### 2.6 configureContentNegotiation：配置内容裁决的一些参数
+
+
 
 ### 2.7 addCorsMappings：跨域
 

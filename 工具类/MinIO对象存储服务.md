@@ -62,7 +62,7 @@ docker run -p 9000:9000 -p 9090:9090 \
 
 ![img](E:\Development\Typora\images\7e45174f035d478eb2403ebc727cadf4.png)
 
-![img](E:\Development\Typora\images\e3beea9516374cd9a282e5381a2a5339.png) 点击下载
+![img](E:\Development\Typora\images\e3beea9516374cd9a282e5381a2a5339.png) 
 
 ![img](E:\Development\Typora\images\7a23b700366344daa14679d920591d12.png)
 
