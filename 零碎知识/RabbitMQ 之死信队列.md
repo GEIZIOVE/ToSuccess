@@ -48,7 +48,7 @@ rabbitmqctl set_policy DLX ".*" '{"dead-letter-exchange":"my-dlx"}' --apply-to q
 
 
 
-```
+```java
 public static void createQueue(){
     try {
         ConnectionFactory factory = new ConnectionFactory();
@@ -80,8 +80,16 @@ public static void createQueue(){
 
 通过RabbitMQ的管理界面可以看到：![这里写图片描述](E:\Development\Typora\images\96387d6eccc26f1a4226a70cbe2bdb6e.png)queue.dlx.test这个queue中有个“DLX"和“DLK”的标记. DLX关联的是exchangeName, DLK关联的是routingKey.
 
-详细说明： 在RabbitMQ中有两个exchange: exchange.dlx.self和exchange.dlx.test，两个queue：queue.dlx.test和%DLX%queue.dlx.test exchange.dlx.self是正常情况下，生产者发送消息到此exchange中，绑定关系如图：![这里写图片描述](E:\Development\Typora\images\01375ad70d4769baee262dc4adb00e6b.png)exchang.dlx.test是产生死信之后，原queue[queue.dlx.test]的死信发送到此exchange中，绑定关系如图：![这里写图片描述](E:\Development\Typora\images\4f00b88b98fb2168ab9d08df91425fd7.png)
+### **详细说明**： 
 
-数据首先发送到 exchange[exchange.dlx.self]，根据routingkey[dlx]路由到queue.dlx.test,如果正常情况下，消费者可以消费queue.dlx.test的内容。但是如果queue.dlx.test中有消息变成了dead message即死信了，那么这个死信则会通过exchangeName=exchange.dlx.test, routingKey="queue.dlx.test"路由到死信队列%DLX%queue.dlx.test中，如果要消费这个dead message, 此时消费者必须消费%DLX%queue.dlx.test中的内容而不是queue.dlx.test中的内容。
+​	在RabbitMQ中有两个**exchange**: `exchange.dlx.self`和`exchange.dlx.test`，
+
+​											两个**queue**：`queue.dlx.test`和`%DLX%queue.dlx.test`     
+
+`exchange.dlx.self`是正常情况下，生产者发送消息到此exchange中，绑定关系如图：![这里写图片描述](E:\Development\Typora\images\01375ad70d4769baee262dc4adb00e6b.png)
+
+`exchang.dlx.test`是产生死信之后，原queue[queue.dlx.test]的死信发送到此exchange中，绑定关系如图：![这里写图片描述](E:\Development\Typora\images\4f00b88b98fb2168ab9d08df91425fd7.png)
+
+数据首先发送到 **exchange[exchange.dlx.self]**，根据routingkey[dlx]路由到queue.dlx.test,如果正常情况下，消费者可以消费queue.dlx.test的内容。但是如果queue.dlx.test中有消息变成了**dead message**即死信了，那么这个死信则会通过exchangeName=exchange.dlx.test, routingKey="queue.dlx.test"路由到死信队列%DLX%queue.dlx.test中，如果要消费这个dead message, 此时消费者必须消费%DLX%queue.dlx.test中的内容而不是queue.dlx.test中的内容。
 
 > 如果不指定x-dead-letter-routing-key参数，则使用原来的routingkey

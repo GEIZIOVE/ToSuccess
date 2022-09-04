@@ -19,6 +19,8 @@
 
 ## 2.application配置
 
+**使用qq发送**
+
 ```yml
 spring:
  mail:
@@ -44,7 +46,27 @@ thymeleaf:
   mode: HTML5
 ```
 
+> 注意：password不是邮箱登录密码，而是第一步中获取的授权码
+>
 
+**使用163发送**
+
+```yml
+spring:
+  mail:
+    host: smtp.163.com #邮件服务器地址
+    username: wqh8888882022@163.com #邮件服务器用户名
+    password: NPXGLDEKAOOHWULU #签名 163:NPXGLDEKAOOHWULU  qq:waudfrgemnmlidjd
+    default-encoding: UTF-8 #邮件编码格式
+    protocol: smtp
+#    port: 465 #邮件服务器端口
+    properties:
+      mail:
+      smtp:
+      auth: true
+      socketFactory:
+      class: javax.net.ssl.SSLSocketFactory
+```
 
 ## 3.创建一个实体类EmailDTO 
 
@@ -69,13 +91,17 @@ public class EmailDTO {
      * 内容
      */
     private String content;
-
 }
 ```
 
 
 
 ## 4.使用
+
+要给工具类加上`@Component`注解
+用@autowired注入JavaMailSenderImpl后 将整个类交给了Spring管理
+因此类上必须加@Component
+在调用该工具类的时候也要用`@Autowired`注入
 
 **我这里结合消息队列使用**
 
@@ -102,10 +128,7 @@ import static com.hong.dk.bookcollect.constant.MQPrefixConst.EMAIL_QUEUE;
 
 /**
  * 通知邮箱
- *
- * @author yezhqiu
- * @date 2021/06/13
- * @since 1.0.0
+ * @author wqh
  **/
 @Component
 @RabbitListener(queues = EMAIL_QUEUE)
@@ -166,6 +189,8 @@ public class EmailConsumer {
 
 
 ## 5.Thymeleaf模板
+
+> Thymeleaf的默认配置期望所有HTML文件都放在 **resources/templates ** 目录下，以.html扩展名结尾。
 
 ```html
 <!DOCTYPE html>
@@ -314,3 +339,37 @@ public class EmailConsumer {
 </table>
 </body>
 ```
+
+
+
+## 6.可能遇到的问题
+
+### 1.解决Error resolving template template might not exist or might not be accessible问题
+
+很明显也很好理解，就是模板页不存在或者找不到了，其实是存在的。
+
+```properties
+spring.thymeleaf.cache=false
+spring.thymeleaf.prefix=classpath:/templates/
+spring.thymeleaf.suffix=.html
+```
+
+改为
+
+```properties
+spring.thymeleaf.cache=false
+spring.thymeleaf.prefix=classpath:/templates
+spring.thymeleaf.suffix=.html
+```
+
+但有的时候第一种管用…..我也不理解…..
+
+
+
+### 2.邮箱的签名password
+
+![image-20220902155354256](E:\Development\Typora\images\image-20220902155354256.png)
+
+
+
+每次修改qq密码以后都需要重新申请签名….
