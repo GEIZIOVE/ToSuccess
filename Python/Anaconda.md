@@ -381,3 +381,34 @@ Conda 允许您创建单独的环境，其中包含不会与其他环境交互�
    conda list
    ```
 
+
+
+
+
+## 3 使用 nb_conda_kernels 添加所有环境
+
+第二种方法其实也挺不错的。有个缺点是，你新建一个环境，就要重复操作一次。
+
+而这个方法就是一键添加所有 conda 环境，且不妙哉！
+
+```
+conda activate my-conda-env    # this is the environment for your project and code
+conda install ipykernel
+conda deactivate
+
+conda activate base      # could be also some other environment
+conda install nb_conda_kernels
+jupyter notebook
+1234567
+```
+
+推荐指数： ⭐️⭐️⭐️⭐️⭐️
+
+注意：这里的 `conda install nb_conda_kernels` 是在 base 环境下操作的。
+
+安装好后，打开 jupyter notebook 就会显示所有的 conda 环境啦，点击随意切换。
+![img](E:\Development\Typora\images\a87689a7f4efa74318f3882edba5b084.png)
+
+当然，并不是每个人都能一帆风顺。可能存在的问题可以参考链接：
+
+[conda 环境问题](https://stackoverflow.com/questions/58068818/how-to-use-jupyter-notebooks-in-a-conda-environment/58068850#58068850)
