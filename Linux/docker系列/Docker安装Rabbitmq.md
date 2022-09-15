@@ -15,21 +15,64 @@
 
 ## 3.运行mq：
 
-简单版
+### 简单版
 
 ```bash
-docker run -d --hostname my-rabbit --name rabbit -p 15672:15672 -p 5672:5672 rabbitmq
+docker run -d --hostname my-rabbit --name rabbit-mqtt -p 15672:15672  -p  5672:5672 rabbitmq
 ```
 
 ![在这里插入图片描述](E:\Development\Typora\images\20210713142432574.png)
 
-复杂版（设置账户密码，hostname）
+> 默认账户密码为guest
+
+### 复杂版
+
+（设置账户密码，hostname）
 
 ```javascript
-docker run -d -p 15672:15672  -p  5672:5672  -e RABBITMQ_DEFAULT_USER=root -e RABBITMQ_DEFAULT_PASS=root --name rabbitmq --hostname=rabbitmqhostone  rabbitmq
+docker run -d -p 15672:15672  -p  5672:5672   -e RABBITMQ_DEFAULT_USER=root -e RABBITMQ_DEFAULT_PASS=root --name rabbitmq --hostname=rabbitmqhostone  rabbitmq
 ```
 
 
+
+### mqtt版本
+
+#### 运行
+
+```
+docker run -d --hostname my-rabbit --name rabbit-mqtt -p 15672:15672  -p  5672:5672 -p 1883:1883 -p 15675:15675 rabbitmq
+```
+
+RabbitMQ 默认关闭MQTT 协议，需用命令手动扩展，RabbitMQ 的MQTT 协议分为两种。
+
+-  rabbitmq_mqtt 提供与后端服务交互使用，端口1883
+-  rabbitmq_web_mqtt 提供与前端交互使用，端口15675
+
+#### 开启插件
+
+然后进入[rabbitmq](https://so.csdn.net/so/search?q=rabbitmq&spm=1001.2101.3001.7020)容器内部，开启插件
+
+```bash
+docker exec -it rabbitmq bin/bash
+rabbitmq-plugins enable rabbitmq_mqtt
+rabbitmq-plugins enable rabbitmq_web_mqtt
+```
+
+#### 重启
+
+```
+docker restart rabbitmq
+```
+
+#### 使用MQTT.fx工具测试
+
+
+
+![图片](E:\Development\Typora\images\640.png)协议对应端口号
+
+使用`MQTT` 协议默认的交换机 `Exchange` 为 `amp.topic`，而我们订阅的主题会在 `Queues` 注册一个客户端队列，路由 `Routing key` 就是我们设置的主题。
+
+![图片](E:\Development\Typora\images\640-16631750957043.png)
 
 ## 4.注意
 

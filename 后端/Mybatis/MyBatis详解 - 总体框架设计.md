@@ -29,7 +29,7 @@ MyBatis 将配置文件中的每一个`<mapper>` 节点抽象为一个 Mapper �
 
 ![img](E:\Development\Typora\images\mybatis-y-arch-3.png)
 
-根据MyBatis 的配置规范配置好后，通过SqlSession.getMapper(XXXMapper.class)方法，MyBatis 会根据相应的接口声明的方法信息，通过动态代理机制生成一个Mapper 实例，我们使用Mapper 接口的某一个方法时，MyBatis 会根据这个方法的方法名和参数类型，确定Statement Id，底层还是通过SqlSession.select("statementId",parameterObject);或者SqlSession.update("statementId",parameterObject); 等等来实现对数据库的操作， MyBatis 引用Mapper 接口这种调用方式，纯粹是为了满足面向接口编程的需要。（其实还有一个原因是在于，面向接口的编程，使得用户在接口上可以使用注解来配置SQL语句，这样就可以脱离XML配置文件，实现“0配置”）。
+根据MyBatis 的配置规范配置好后，通过`SqlSession.getMapper(XXXMapper.class)`方法，MyBatis 会根据相应的接口声明的方法信息，通过动态代理机制生成一个Mapper 实例，我们使用Mapper 接口的某一个方法时，MyBatis 会根据这个方法的方法名和参数类型，确定Statement Id，**底层还是通过**`SqlSession.select("statementId",parameterObject);`或者`SqlSession.update("statementId",parameterObject);` 等等来实现对数据库的操作， MyBatis 引用Mapper 接口这种调用方式，纯粹是为了满足面向接口编程的需要。（其实还有一个原因是在于，面向接口的编程，使得用户在接口上可以使用注解来配置SQL语句，这样就可以脱离XML配置文件，实现“0配置”）。
 
 ### [¶](#数据处理层) 数据处理层
 
@@ -40,9 +40,9 @@ MyBatis 将配置文件中的每一个`<mapper>` 节点抽象为一个 Mapper �
 
 #### [¶](#参数映射和动态sql语句生成) 参数映射和动态SQL语句生成
 
-动态语句生成可以说是MyBatis框架非常优雅的一个设计，MyBatis 通过传入的参数值，使用 Ognl 来动态地构造SQL语句，使得MyBatis 有很强的灵活性和扩展性。
+动态语句生成可以说是MyBatis框架非常优雅的一个设计，MyBatis 通过传入的参数值，使用 `Ognl` 来动态地构造SQL语句，使得MyBatis 有很强的灵活性和扩展性。
 
-参数映射指的是对于java 数据类型和jdbc数据类型之间的转换：这里有包括两个过程：查询阶段，我们要将java类型的数据，转换成jdbc类型的数据，通过 preparedStatement.setXXX() 来设值；另一个就是对resultset查询结果集的jdbcType 数据转换成java 数据类型。
+参数映射指的是对于java 数据类型和jdbc数据类型之间的转换：这里有包括两个过程：查询阶段，我们要将java类型的数据，转换成jdbc类型的数据，通过 `preparedStatement.setXXX()` 来设值；另一个就是对resultset查询结果集的jdbcType 数据转换成java 数据类型。
 
 #### [¶](#sql语句的执行以及封装查询结果集成list) SQL语句的执行以及封装查询结果集成List
 
@@ -52,7 +52,7 @@ MyBatis 将配置文件中的每一个`<mapper>` 节点抽象为一个 Mapper �
 
 - 事务管理机制
 
-事务管理机制对于ORM框架而言是不可缺少的一部分，事务管理机制的质量也是考量一个ORM框架是否优秀的一个标准。
+事务管理机制对于`ORM`框架而言是不可缺少的一部分，事务管理机制的质量也是考量一个ORM框架是否优秀的一个标准。
 
 - 连接池管理机制
 
@@ -60,7 +60,7 @@ MyBatis 将配置文件中的每一个`<mapper>` 节点抽象为一个 Mapper �
 
 - 缓存机制
 
-为了提高数据利用率和减小服务器和数据库的压力，MyBatis 会对于一些查询提供会话级别的数据缓存，会将对某一次查询，放置到SqlSession 中，在允许的时间间隔内，对于完全相同的查询，MyBatis 会直接将缓存结果返回给用户，而不用再到数据库中查找。
+为了提高数据利用率和减小服务器和数据库的压力，`MyBatis 会对于一些查询提供会话级别的数据缓存`，会将对某一次查询，放置到SqlSession 中，在允许的时间间隔内，对于完全相同的查询，MyBatis 会直接将缓存结果返回给用户，而不用再到数据库中查找。
 
 - SQL语句的配置方式
 

@@ -1,6 +1,6 @@
-# Caddy
-
 # Caddy简介
+
+[Caddy中文文档 - Caddy中文文档 (dengxiaolong.com)](https://dengxiaolong.com/caddy/zh/)
 
 Caddy是一款功能强大，扩展性高的Web服务器，目前在Github上已有`38K+Star`。Caddy采用Go语言编写，可用于静态资源托管和反向代理。
 

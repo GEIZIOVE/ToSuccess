@@ -151,9 +151,7 @@
       4) "1"
 127.0.0.1:6379> del codehole  # 删除整个Stream
 (integer) 1
-  
-        @pdai: 代码已经复制到剪贴板
-    
+
 ```
 
 ### [¶](#独立消费) 独立消费
@@ -212,22 +210,23 @@
 ![img](E:\Development\Typora\images\db-redis-stream-3.png)
 
 - 相关命令：
-  - XGROUP CREATE - 创建消费者组
-  - XREADGROUP GROUP - 读取消费者组中的消息
-  - XACK - 将消息标记为"已处理"
-  - XGROUP SETID - 为消费者组设置新的最后递送消息ID
-  - XGROUP DELCONSUMER - 删除消费者
-  - XGROUP DESTROY - 删除消费者组
-  - XPENDING - 显示待处理消息的相关信息
-  - XCLAIM - 转移消息的归属权
-  - XINFO - 查看流和消费者组的相关信息；
-  - XINFO GROUPS - 打印消费者组的信息；
-  - XINFO STREAM - 打印流信息
+  - `XGROUP CREATE` - 创建消费者组
+  - `XREADGROUP GROUP` - 读取消费者组中的消息
+  - `XACK` - 将消息标记为"已处理"
+  - `XGROUP SETID` - 为消费者组设置新的最后递送消息ID
+  - `XGROUP DELCONSUMER` - 删除消费者
+  - `XGROUP DESTROY` - 删除消费者组
+  - `XPENDING` - 显示待处理消息的相关信息
+  - `XCLAIM` - 转移消息的归属权
+  - `XINFO` - 查看流和消费者组的相关信息；
+  - `XINFO GROUPS` - 打印消费者组的信息；
+  - `XINFO STREAM` - 打印流信息
 - **创建消费组**
 
-Stream通过xgroup create指令创建消费组(Consumer Group)，需要传递起始消息ID参数用来初始化last_delivered_id变量。
+Stream通过`xgroup create`指令创建消费组(Consumer Group)，需要传递起始消息ID参数用来初始化last_delivered_id变量。
 
 ```bash
+#注意首先要创建stream
 127.0.0.1:6379> xgroup create codehole cg1 0-0  #  表示从头开始消费
 OK
 # $表示从尾部开始消费，只接受新消息，当前Stream消息会全部忽略
@@ -267,20 +266,18 @@ OK
    4) (integer) 0
    5) pending
    6) (integer) 0  # 该消费组没有正在处理的消息
-  
-        @pdai: 代码已经复制到剪贴板
-    
+
 ```
 
 
 
 - **消费组消费**
 
-Stream提供了xreadgroup指令可以进行消费组的组内消费，需要提供消费组名称、消费者名称和起始消息ID。它同xread一样，也可以阻塞等待新消息。读到新消息后，对应的消息ID就会进入消费者的PEL(正在处理的消息)结构里，客户端处理完毕后使用xack指令通知服务器，本条消息已经处理完毕，该消息ID就会从PEL中移除。
+Stream提供了`xreadgroup`指令可以进行消费组的组内消费，**需要提供消费组名称、消费者名称和起始消息ID**。它同xread一样，也可以阻塞等待新消息。读到新消息后，对应的消息ID就会进入`消费者的PEL(正在处理的消息)`结构里，客户端处理完毕后使用`xack`指令通知服务器，本条消息已经处理完毕，该消息ID就会从PEL中移除。
 
 ```bash
 # >号表示从当前消费组的last_delivered_id后面开始读
-# 每当消费者读取一条消息，last_delivered_id变量就会前进
+# 每当消费者读取一条消息，last_delivered_id变量就会前进6369+
 127.0.0.1:6379> xreadgroup GROUP cg1 c1 count 1 streams codehole >
 1) 1) "codehole"
    2) 1) 1) 1527851486781-0
@@ -352,7 +349,7 @@ Stream提供了xreadgroup指令可以进行消费组的组内消费，需要提�
 1) 1) name
    2) "c1"
    3) pending
-   4) (integer) 4  # 变成了5条
+   4) (integer) 4  # 变成了4条
    5) idle
    6) (integer) 668504
 # 下面ack所有消息
@@ -365,9 +362,7 @@ Stream提供了xreadgroup指令可以进行消费组的组内消费，需要提�
    4) (integer) 0  # pel空了
    5) idle
    6) (integer) 745505
-  
-        @pdai: 代码已经复制到剪贴板
-    
+ 
 ```
 
 
@@ -398,30 +393,8 @@ Stream提供了XINFO来实现对服务器信息的监控，可以查询：
 14) 1) "1553585533795-9"
     2) 1) "msg"
        2) "10"
-  
-        @pdai: 代码已经复制到剪贴板
-    
-```
 
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
+```
 
 - 消费组信息
 
@@ -435,20 +408,7 @@ Stream提供了XINFO来实现对服务器信息的监控，可以查询：
    6) (integer) 3
    7) "last-delivered-id"
    8) "1553585533795-4"
-  
-        @pdai: 代码已经复制到剪贴板
-    
 ```
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
 
 - 消费者组成员信息
 
@@ -523,15 +483,11 @@ QUEUED
 4) "1553441006884-3"
 5) "1553441006884-4"
   
-        @pdai: 代码已经复制到剪贴板
-    
 ```
-
-
 
 由于一个redis命令的执行很快，所以可以看到在同一时间戳内，是通过序号递增来表示消息的。
 
-为了保证消息是有序的，因此Redis生成的ID是单调递增有序的。由于ID中包含时间戳部分，为了避免服务器时间错误而带来的问题（例如服务器时间延后了），Redis的每个Stream类型数据都维护一个latest_generated_id属性，用于记录最后一个消息的ID。**若发现当前时间戳退后（小于latest_generated_id所记录的），则采用时间戳不变而序号递增的方案来作为新消息ID**（这也是序号为什么使用int64的原因，保证有足够多的的序号），从而保证ID的单调递增性质。
+为了保证消息是有序的，因此Redis生成的ID是单调递增有序的。由于ID中包含时间戳部分，为了避免服务器时间错误而带来的问题（例如服务器时间延后了），Redis的每个Stream类型数据都维护一个`latest_generated_id`属性，用于记录最后一个消息的ID。**若发现当前时间戳退后（小于latest_generated_id所记录的），则采用时间戳不变而序号递增的方案来作为新消息ID**（`这也是序号为什么使用int64的原因，保证有足够多的的序号`），从而保证ID的单调递增性质。
 
 强烈建议使用Redis的方案生成消息ID，因为这种时间戳+序号的单调递增的ID方案，几乎可以满足你全部的需求。但同时，记住ID是支持自定义的，别忘了！
 
@@ -568,12 +524,8 @@ QUEUED
    3) (integer) 1641083
    4) (integer) 5
 # 共3个，余下2个省略 ...
-  
-        @pdai: 代码已经复制到剪贴板
-    
+
 ```
-
-
 
 每个Pending的消息有4个属性：
 
@@ -599,9 +551,7 @@ QUEUED
    3) 1) "consumerC"
       2) "1"
 127.0.0.1:6379>
-  
-        @pdai: 代码已经复制到剪贴板
-    
+   
 ```
 
 
@@ -612,7 +562,7 @@ QUEUED
 
 > 还有一个问题，就是若某个消费者宕机之后，没有办法再上线了，那么就需要将该消费者Pending的消息，转义给其他的消费者处理，就是消息转移。
 
-消息转移的操作时将某个消息转移到自己的Pending列表中。使用语法XCLAIM来实现，需要设置组、转移的目标消费者和消息ID，同时需要提供IDLE（已被读取时长），只有超过这个时长，才能被转移。演示如下：
+消息转移的操作`时将某个消息转移到自己的Pending列表中`。使用语法XCLAIM来实现，需要设置组、转移的目标消费者和消息ID，同时需要提供IDLE（已被读取时长），只有超过这个时长，才能被转移。演示如下：
 
 ```bash
 # 当前属于消费者A的消息1553585533795-1，已经15907,787ms未处理了
@@ -634,9 +584,7 @@ QUEUED
    2) "consumerB"
    3) (integer) 84404 # 注意IDLE，被重置了
    4) (integer) 5 # 注意，读取次数也累加了1次
-  
-        @pdai: 代码已经复制到剪贴板
-    
+
 ```
 
 
@@ -646,9 +594,7 @@ QUEUED
 ```bash
 127.0.0.1:6379> XCLAIM mq mqGroup consumerB 3600000 1553585533795-1
 127.0.0.1:6379> XCLAIM mq mqGroup consumerC 3600000 1553585533795-1
-  
-        @pdai: 代码已经复制到剪贴板
-    
+ 
 ```
 
 
@@ -672,8 +618,6 @@ QUEUED
    2) 1) "msg"
       2) "3"
   
-        @pdai: 代码已经复制到剪贴板
-    
 ```
 
 
