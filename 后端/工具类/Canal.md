@@ -42,7 +42,7 @@
 
 ```properties
 [mysqld]
-log-bin=mysql-bin # 开启binlog
+ # 开启binlog
 binlog-format=ROW # 选择ROW模式
 server_id=1 # 配置MySQL replaction需要定义，不要和canal的slaveId重复
 ```
@@ -762,10 +762,6 @@ public class CanalListener {
 #### 启动 Canal
 
 切换到项目的 `cd /bin` 目录下，输入 `startup` 启动 Canal
-
-
-
-
 
 ### 踩坑记录
 
