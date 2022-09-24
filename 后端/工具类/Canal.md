@@ -1,5 +1,7 @@
 # Canal
 
+[Canal Admin QuickStart · alibaba/canal Wiki (github.com)](https://github.com/alibaba/canal/wiki/Canal-Admin-QuickStart)
+
 [![img](E:\Development\Typora\images\2051340-20210429123231375-821264634.png)](https://img2020.cnblogs.com/blog/2051340/202104/2051340-20210429123231375-821264634.png)
 
 **canal [kə'næl]**，译意为水道/管道/沟渠，主要用途是基于 MySQL 数据库**增量日志**解析，提供**增量数据订阅**和**消费**
@@ -1180,3 +1182,47 @@ binlog本身是有序的，写入到mq之后如何保障顺序是很多人会比
 - 单topic单分区，可以严格保证和binlog一样的顺序性，缺点就是性能比较慢，单分区的性能写入大概在2~3k的TPS
 - 多topic单分区，可以保证表级别的顺序性，一张表或者一个库的所有数据都写入到一个topic的单分区中，可以保证有序性，针对热点表也存在写入分区的性能问题
 - 单topic、多topic的多分区，如果用户选择的是指定table的方式，那和第二部分一样，保障的是表级别的顺序性(存在热点表写入分区的性能问题)，如果用户选择的是指定pk hash的方式，那只能保障的是一个pk的多次binlog顺序性 ** pk hash的方式需要业务权衡，这里性能会最好，但如果业务上有pk变更或者对多pk数据有顺序性依赖，就会产生业务处理错乱的情况. 如果有pk变更，pk变更前和变更后的值会落在不同的分区里，业务消费就会有先后顺序的问题，需要注意
+
+
+
+## 遇见的问题
+
+### canal异常 Could not find first log file name in binary log index file
+
+# 问题
+
+最近在使用canal来监测数据库的变化，处理变动的数据。由于有一段时间没有用了，这次启动在日志文件中看到这个异常 Could not find first log file name in binary log index file，详细信息如下：
+
+```log
+2020-12-16 19:14:42.053 [destination = tradeAndRefund , address = /192.168.1.6:3306 , EventParser] ERROR c.a.o.c.p.inbound.mysql.rds.RdsBinlogEventParserProxy - dump address /192.168.1.6:3306 has an error, retrying. caused by
+java.io.IOException: Received error packet: errno = 1236, sqlstate = HY000 errmsg = Could not find first log file name in binary log index file
+        at com.alibaba.otter.canal.parse.inbound.mysql.dbsync.DirectLogFetcher.fetch(DirectLogFetcher.java:102) ~[canal.parse-1.1.4.jar:na]
+        at com.alibaba.otter.canal.parse.inbound.mysql.MysqlConnection.dump(MysqlConnection.java:235) ~[canal.parse-1.1.4.jar:na]
+        at com.alibaba.otter.canal.parse.inbound.AbstractEventParser$3.run(AbstractEventParser.java:265) ~[canal.parse-1.1.4.jar:na]
+        at java.lang.Thread.run(Thread.java:748) [na:1.8.0_162]
+2020-12-16 19:14:42.053 [destination = tradeAndRefund , address = /192.168.1.6:3306 , EventParser] ERROR com.alibaba.otter.canal.common.alarm.LogAlarmHandler - destination:tradeAndRefund[java.io.IOException: Received error packet: errno = 1236, sqlstate = HY000 errmsg = Could not find first log file name in binary log index file
+        at com.alibaba.otter.canal.parse.inbound.mysql.dbsync.DirectLogFetcher.fetch(DirectLogFetcher.java:102)
+        at com.alibaba.otter.canal.parse.inbound.mysql.MysqlConnection.dump(MysqlConnection.java:235)
+        at com.alibaba.otter.canal.parse.inbound.AbstractEventParser$3.run(AbstractEventParser.java:265)
+        at java.lang.Thread.run(Thread.java:748)
+]
+123456789101112
+```
+
+# 解决
+
+在配置目录conf里面对应的instance配置目录下有一个meta.dat的文件，里面记录了上次处理的位置。把这个文件直接删掉，或者纠正里面的binlog位置信息，问题就解决了。
+
+# 解决过程
+
+首先我要说下我的环境。我用了canal的admin来进行集群管理，canal.deployer中我使用start.sh local 来启动了server。运行起来之后集群状态正常，查看instance的日志就发现了上面的日志。
+然后说一下我的解决过程。一开始看到这个问题，就知道是instance寻找binlog的位置信息时出现了问题，所以翻了一下文档。文档中说可以通过canal.instance.master.journal.name和canal.instance.master.position这两个配置来指定position，也可以通过canal.instance.master.timestamp来指定一个时间。但是这两个配置我都试了，不行！始终有报错。
+最后是在没办法，只好一行一行的看启动日志，发现了下面这个信息：
+
+```shell
+2020-12-16 19:14:42.045 [destination = tradeAndRefund , address = /192.168.1.6:3306 , EventParser] DEBUG java.sql.ResultSet - {rset-100008} Result: [31, 2020-11-10 17:00:18.504, 2020-11-10 17:00:18.504, tradeAndRefund, mysql-bin.000037, 536485765, 10, 1604921837000, 
+1
+```
+
+这个是寻找location的日志，我发现这里的文件和位置都不是我设置的，那他是哪里来的呢？最后我在canal.deployer的根目录下执行`grep '000037' ./* -r`命令，最终刚发现在logs目录和conf目录下对应的instance中找到了这些内容。分别删掉这两个东西进行重启，最后发现config下面那个是起作用的，把他给改了就好了。
+问题解决~

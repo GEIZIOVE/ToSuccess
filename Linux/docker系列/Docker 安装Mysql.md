@@ -39,7 +39,7 @@ docker cp mysql5:/etc/mysql     /usr/local/dk/docker/mysql5
 
 
 
-```
+```my.cnf
 # For advice on how to change settings please see
 # http://dev.mysql.com/doc/refman/5.7/en/server-configuration-defaults.html
 
@@ -203,14 +203,14 @@ show variables like '%log_bin%'
 2.找到刚挂载到本地的mysql设置目录 /etc/mysql
 
 ```html
-vim /usr/local/dk/docker/mysql5/mysql/mysql.conf.d/mysqld.cnf
+vim /usr/local/dk/docker/mysql5/mysql/mysql.conf.d/my.cnf
 ```
 
 ![img](E:\Development\Typora\images\70-16638636551011.png)
 
 在以上修改的文件下方，添加上红框中的两条
 
-这一个参数的作用是mysql会根据这个配置自动设置log_bin为on状态，自动设置log_bin_index文件为你指定的文件名后跟.index
+这一个参数的作用是mysql会根据这个配置`自动设置log_bin为on状态`，自动设置`log_bin_index`文件为你指定的文件名后跟.index
 
 第二个参数 ，用的如果是5.7及以上版本的话，重启mysql服务会报错，这个时候我们必须还要指定这样一个参数，随机指定一个不能和其他集群中机器重名的字符串，如果只有一台机器，那就可以随便指定了
 
@@ -221,6 +221,10 @@ docker restart mysql
 ```
 
 再次查询就会看到已开启mysql的binlog日志，如下图：
+
+```sql
+show variables like '%log_bin%'
+```
 
 ![img](E:\Development\Typora\images\70-16638636551022.png)
 
@@ -260,7 +264,20 @@ docker restart mysql
  SHOW  GLOBAL VARIABLES LIKE '%log%';
 ```
 
-##  
+
+
+## MySQL配置文件加载顺序
+
+### 通常情况下是以下顺序
+
+1. /etc/my.cnf
+2. /etc/mysql/my.cnf
+3. SYSCONFDIR/my.cnf basedir/my.cnf
+4. $MYSQL_HOME/my.cnf datadir/my.cnf
+5. 加启动指定参数 -defaults-file=#， 只读取指定的文件（不再读取其他配置文件） -defaults-extra-file=#，从其他优先级更高的配置文件中读取全局配置后，再读取指定的配置文件。
+6. ~/my.cnf
+
+**同时配置同一属性的时候，后面的配置会覆盖前面的配置，除非使用 `-defaults-file` 指定文件**
 
 
 
