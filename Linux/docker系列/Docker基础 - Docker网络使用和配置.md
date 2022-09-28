@@ -191,7 +191,7 @@ docker0         8000.0242703f9d02       no
 ```
 
  
- 
+
 
 - **创建容器**
 
@@ -372,9 +372,7 @@ root@pdai:~# brctl show
 bridge name     bridge id               STP enabled     interfaces
 br0             8000.7e6e617c8d53       no              em1
                                             vethe6e5
-  
-        @pdai: 代码已经复制到剪贴板
-    
+ 
 ```
 
 
