@@ -150,7 +150,7 @@
 67 }
 ```
 
-[![复制代码](E:/Development/Typora/images/copycode-16641070625451.gif)](javascript:void(0);)
+
 
    上面的代码只贴出了部分关键的实现，有兴趣的读者可以自己去研究，下面贴出比较直观的spi加载的主要流程供参考：
 

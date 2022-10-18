@@ -1,5 +1,7 @@
 # AJ-Captcha
 
+[功能概述 | AJ-Captcha (beliefteam.cn)](https://ajcaptcha.beliefteam.cn/captcha-doc/)
+
 # 简介
 
  		`AJ-Captcha`行为验证码，包含滑动拼图、文字点选两种方式，UI支持弹出和嵌入两种方式。后端提供Java实现，前端提供了`php、angular、html、vue、uni-app、flutter、android、ios`等代码示例。

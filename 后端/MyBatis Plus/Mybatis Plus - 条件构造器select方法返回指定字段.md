@@ -26,6 +26,12 @@ public AjaxResult listAll( ) {
 }
 ```
 
+实操：
+
+![image-20221003155915776](E:/Development/Typora/images/image-20221003155915776.png)
+
+![image-20221003155924137](E:/Development/Typora/images/image-20221003155924137.png)
+
 ### 实例二：排除不需要返回的字段
 
 ```java
