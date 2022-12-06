@@ -149,7 +149,6 @@ docker ps
 docker exec -it mysql /bin/bash
 ## 或者
 docker exec -it mysql bash
-
 ```
 
 ## Linux登录Mysql
@@ -210,9 +209,9 @@ vim /usr/local/dk/docker/mysql5/mysql/mysql.conf.d/my.cnf
 
 在以上修改的文件下方，添加上红框中的两条
 
-这一个参数的作用是mysql会根据这个配置`自动设置log_bin为on状态`，自动设置`log_bin_index`文件为你指定的文件名后跟.index
+​		这一个参数的作用是mysql会根据这个配置`自动设置log_bin为on状态`，自动设置`log_bin_index`文件为你指定的文件名后跟.index
 
-第二个参数 ，用的如果是5.7及以上版本的话，重启mysql服务会报错，这个时候我们必须还要指定这样一个参数，随机指定一个不能和其他集群中机器重名的字符串，如果只有一台机器，那就可以随便指定了
+​		第二个参数 ，用的如果是5.7及以上版本的话，重启mysql服务会报错，这个时候我们必须还要指定这样一个参数，随机指定一个不能和其他集群中机器重名的字符串，如果只有一台机器，那就可以随便指定了
 
 7.设置完后重启mysql容器
 
@@ -228,7 +227,7 @@ show variables like '%log_bin%'
 
 ![img](E:\Development\Typora\images\70-16638636551022.png)
 
-这个时候，在数据库中创建一个数据库、表，插入一些数据，就会在/var/lib/mysql容器中看到以下，或者是看挂载出来对应的目录上,
+​		这个时候，在数据库中创建一个数据库、表，插入一些数据，就会在/var/lib/mysql容器中看到以下，或者是看挂载出来对应的目录上,
 
 ![img](E:\Development\Typora\images\70-16638636551023.png)
 

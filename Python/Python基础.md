@@ -64,8 +64,6 @@ number_of_students = 80
 AGE_OF_OLDBOY = 56
 ```
 
-
-
 #### 例子
 
 ```python
@@ -89,13 +87,11 @@ STUDENT_NAME = "峰哥"
 print(STUDENT_NAME)
 ```
 
-
-
 ### 注释
 
  随着学习的深入，用不了多久，你就可以写复杂的上千甚至上万行的代码啦，有些代码你花了很久写出来，过了些天再回去看，发现竟然看不懂了，哈哈，这太正常了。 另外，你以后在工作中会发现，一个项目多是由几个甚至几十个开发人员一起做，你要调用别人写的代码，别人也要用你的，如果代码不加注释，你自己都看不懂，更别说别人了，这样写会挨打的。所以为了避免这种尴尬的事情发生，一定要增加你代码的可读性。
 
- 代码注释分单行和多行注释， 单行注释用`#`，多行注释可以用**三对**双引号`“”” “””`
+ 代码注释分单行和多行注释， 单行注释用`#`，多行注释可以用**三对**双引号 `“”” “””`
 
 ```python
 """
@@ -117,19 +113,19 @@ print(STUDENT_NAME)
 
 ### 数据类型
 
- 我们人类可以很容易的分清数字与字符的区别，但是计算机并不能呀，计算机虽然很强大，但从某种角度上看又很傻，除非你明确的告诉它，1是数字，“汉”是文字，否则它是分不清1和‘汉’的区别的，因此，在每个编程语言里都会有一个叫数据类型的东东，其实就是对常用的各种数据类型进行了明确的划分，你想让计算机进行数值运算，你就传数字给它，你想让他处理文字，就传字符串类型给他。Python中常用的数据类型包括多种，今天我们暂只讲4种， 数字、字符串、布尔类型、列表。
+ 	我们人类可以很容易的分清数字与字符的区别，但是计算机并不能呀，计算机虽然很强大，但从某种角度上看又很傻，除非你明确的告诉它，1是数字，“汉”是文字，否则它是分不清1和‘汉’的区别的，因此，在每个编程语言里都会有一个叫数据类型的东东，其实就是对常用的各种数据类型进行了明确的划分，你想让计算机进行数值运算，你就传数字给它，你想让他处理文字，就传字符串类型给他。Python中常用的数据类型包括多种，今天我们暂只讲4种， 数字、字符串、布尔类型、列表。
 
 #### 数字(int,float)
 
 - **int（整型）**
 
- 在64位系统上，整数的位数为64位，取值范围为-2**63～2**63-1，即-9223372036854775808～9223372036854775807
+ 在64位系统上，整数的位数为64位，取值范围为-2^**63～2**63-1，即-9223372036854775808～9223372036854775807
 
 - **long（长整型）**
 
  跟C语言不同，Python的长整数没有指定位宽，即：Python没有限制长整数数值的大小，但实际上由于机器内存有限，我们使用的长整数数值不可能无限大。
 
- 注意，自从Python2.2起，如果整数发生溢出，Python会自动将整数数据转换为长整数，所以如今在长整数数据后面不加字母L也不会导致严重后果了。
+ 注意，自从Python2.2起，如果整数发生溢出，Python会**自动**将整数数据转换为长整数，所以如今在长整数数据后面不加字母L也不会导致严重后果了。
 
 > ***注意：在Python3里不再有long类型了，全都是int***
 
@@ -137,7 +133,7 @@ print(STUDENT_NAME)
 
   即小数
 
- 例子
+ **例子**
 
 ```python
 # int
@@ -535,7 +531,7 @@ True
 
 #### 字节(bytes)
 
- bytes类型是指一堆字节的集合，在python中以b开头的字符串都是bytes类型
+ bytes类型是指一堆字节的集合，**在python中以b开头的字符串都是bytes类型**
 
 ```python
 b'\xe5\xb0\x8f\xe7\x8c\xbf\xe5\x9c\x88' #b开头的都代表是bytes类型，是以16进制来显示的，2个16进制代表一个字节。 utf-8是3个字节代表一个中文，所以以上正好是9个字节
@@ -700,35 +696,35 @@ Drake  ['James', 'Kobe']  Jack  Mack-  Rain  Alex  Drake  Jack  Mack-  Rain  Tom
 
  **追加**，数据会追加到尾部
 
-```
+```python
 # 最后添加
 user_names.append("Taylor")
 ```
 
  **插入**，可插入任何位置
 
-```
+```python
 # 指定位置添加
 user_names.insert(3, "Drake")
 ```
 
  **合并**,可以把另一外列表的值合并进来
 
-```
+```python
 # 列表的合并
 user_names.extend(user_names_copy)
 ```
 
  **复制**，将一个数组中的元素复制给另一个数组
 
-```
+```python
 # 复制
 user_names_copy = user_names.copy()
 ```
 
  **列表嵌套**
 
-```
+```python
 # 列表的嵌套
 user_names.insert(2, ["James", "Kobe"])
 ```
@@ -739,28 +735,28 @@ user_names.insert(2, ["James", "Kobe"])
 
  **del 直接删**
 
-```
+```python
 # 删除(删除指定索引的元素)
 del user_names[0]
 ```
 
  **pop 删**
 
-```
+```python
 # 删除最后一个元素
 user_names.pop()
 ```
 
  **clear 清空**
 
-```
+```python
 # 清空(删除所有的元素)
 user_names.clear()
 ```
 
  **remove 删除**
 
-```
+```python
 # 删除(删除指定的元素,只删除第一个)
 user_names.remove("Mack")
 ```
@@ -769,7 +765,7 @@ user_names.remove("Mack")
 
 ##### 修改
 
-```
+```python
 # 修改(-1为修改最后一个)
 user_names[0] = "Tomcat"
 user_names[-1] = "Mack-"
@@ -781,13 +777,13 @@ user_names[-1] = "Mack-"
 
  **arr[index]**查询指定索引位置的元素
 
-```
+```python
 print("第二个名称："+user_names[1])
 ```
 
  **in**,判断指定元素在数组中是否存在
 
-```
+```python
 # 判断元素是否在数组里
 print("Alex是否在数组中：", "Alex" in user_names)
 print("Alex1是否在数组中：", "Alex1" in user_names)
@@ -795,21 +791,21 @@ print("Alex1是否在数组中：", "Alex1" in user_names)
 
  **index**，判断指定元素在数组中的索引
 
-```
+```python
 # 获取元素索引
 print("Alex的索引(index)：", user_names.index("Alex"))
 ```
 
  **count**，查询指定元素在数组中的数量
 
-```
+```python
 # 指定元素的总量
 print("指定元素Alex的总量(count)：", user_names.count("Alex"))
 ```
 
  **len**，查询数组的长度
 
-```
+```python
 # 数组的长度
 print("数组的长度(len)：", len(user_names))
 ```
@@ -820,14 +816,14 @@ print("数组的长度(len)：", len(user_names))
 
  **reverse**，指定数组所有元素进行一个翻转
 
-```
+```python
 # 翻转
 user_names.reverse()
 ```
 
  **切片**，原数组并没有反转
 
-```
+```python
 print("整个数组翻转：", user_names[::-1])
 ```
 
@@ -837,7 +833,9 @@ print("整个数组翻转：", user_names[::-1])
 
  切片就像切面包，可以同时取出元素的多个值
 
-```
+左闭右开
+
+```python
 names[start:end:step] #step默认为1
 print("取出数组中索引为[1,4)的元素：", user_names[1:4])
 print("取出数组中索引为[1,-2)的元素：", user_names[1:-2])
@@ -849,7 +847,7 @@ print("整个数组：", user_names[:])
 
  **步长， 允许跳着取值**
 
-```
+```python
 print("取出数组中索引为[1,4)，步长为2的元素：", user_names[1:4:2])
 print("倒着写[-1,-5),步长为-1：", user_names[-1:-5:-1])
 print("整个数组，步长为2：", user_names[::2])
@@ -860,7 +858,7 @@ print("整个数组翻转：", user_names[::-1])
 
 ##### 排序
 
-```
+```python
 # 排序
 user_names.sort()
 ```
@@ -873,7 +871,7 @@ user_names.sort()
 
 ##### 循环
 
-```
+```python
 # 循环
 for i in user_names:
     print(i, end="  ")
@@ -889,7 +887,7 @@ print()
 
 ##### 解构
 
-```
+```python
 user_info = ["张三", "中国", 20]
 name, area, age = user_info
 print("%s--%s--%s" % (name, area, age))
@@ -905,19 +903,19 @@ print("%s--%s--%s" % (name, area, age))
 
  有些时候我们的列表数据不想被人修改时怎么办？ 就可以用元组存放，元组又被称为`只读列表`，不能修改。
 
- 定义：与列表类似，只不过［］改成（）
+ **定义**：**与列表类似，只不过［］改成（）**
 
- 特性：
+ **特性**：
 
-1.可存放多个值
+​		1.可存放多个值
 
-2.不可变
+​		2.不可变
 
-3.按照从左到右的顺序定义元组元素，下标从0开始顺序访问，有序
+​		3.按照从左到右的顺序定义元组元素，下标从0开始顺序访问，有序
 
  **创建**
 
-```
+```python
 user_names = ("James", "Tom", "Drake", ["Rain", "Jack"])
 或者
 user_names2 = tuple((1, 2, 3, 4))
@@ -925,7 +923,7 @@ user_names2 = tuple((1, 2, 3, 4))
 
  **常用操作**
 
-```
+```python
 print("所有元素：", user_names)
 print("查看第二个元素：", user_names[1])
 print("Tom的索引：", user_names.index("Tom"))
@@ -938,7 +936,7 @@ print("查询第[1， 3)个元素(切片)：", user_names[1:3])
 
  输出
 
-```
+```python
 所有元素： ('James', 'Tom', 'Drake', ['Rain', 'Jack'])
 查看第二个元素： Tom
 Tom的索引： 1
@@ -950,18 +948,18 @@ Tom的个数： 1
 
  **注意：元组本身不可变，如果元组中还包含其他可变元素，这些可变元素可以改变**
 
-```
+```python
 user_names[-1].append("金角大王")
 print("元组：", user_names)
 ```
 
  **输出**
 
-```
+```python
 元组： ('James', 'Tom', 'Drake', ['Rain', 'Jack', '金角大王'])
 ```
 
- 为啥呢？ 因为元组只是存每个元素的内存地址，上面[‘金角大王’, ‘Jack’]这个列表本身的内存地址存在元组里确实不可变，但是这个列表包含的元素的内存地址是存在另外一块空间里的，是可变的。
+ 为啥呢？ **因为元组只是存每个元素的内存地址，上面[‘金角大王’, ‘Jack’]这个列表本身的内存地址存在元组里确实不可变，但是这个列表包含的元素的内存地址是存在另外一块空间里的，是可变的。**
 
 [![img](E:\Development\Typora\images\20200727162602164.png)](https://img-blog.csdnimg.cn/20200727162602164.png)
 
@@ -979,7 +977,7 @@ print("元组：", user_names)
 
 ##### 定义
 
-```
+```python
 # 方式一
 print("-----方式一-----")
 info_dict_1 = {
@@ -1010,7 +1008,7 @@ print("完整信息：", info_dict_4)
 
  输出
 
-```
+```python
 -----方式一-----
 类型： <class 'dict'>
 名字： Alex  完整信息： {'name': 'Alex', 'position': 'CEO', 'salary': 60000}
@@ -1028,7 +1026,7 @@ print("完整信息：", info_dict_4)
 
 ##### 查询
 
-```
+```python
 print("查询长度：", len(info_dict_3))
 print("查询名称1：", info_dict_3["name"])
 print("查询名称2：", info_dict_3.get("name"))
@@ -1042,7 +1040,7 @@ print("获取所有的value：", info_dict_3.values())
 
  输出
 
-```
+```python
 查询长度： 3
 查询名称1： Alex
 查询名称2： Alex
@@ -1058,7 +1056,7 @@ print("获取所有的value：", info_dict_3.values())
 
 ##### 新增
 
-```
+```python
 # 新增
 info_dict_3.setdefault("age", 20)
 info_dict_3["area"] = "上海"
@@ -1067,7 +1065,7 @@ print("新增两个键值对后，完整信息：", info_dict_3)
 
  输出
 
-```
+```python
 新增两个键值对后，完整信息： {'name': 'Alex', 'position': 'CEO', 'salary': 60000, 'age': 20, 'area': '上海'}
 ```
 
@@ -1075,7 +1073,7 @@ print("新增两个键值对后，完整信息：", info_dict_3)
 
 ##### 修改
 
-```
+```python
 # 修改
 info_dict_2["name"] = "Drake"
 info_dict_2.update({"salary": 65000, "position": "manager"})
@@ -1085,7 +1083,7 @@ print("修改名称和薪资后，完整信息：", info_dict_2)
 
  输出
 
-```
+```python
 修改名称和薪资后，完整信息： {'name': 'Drake', 'position': 'manager', 'salary': 65000}
 ```
 
@@ -1093,7 +1091,7 @@ print("修改名称和薪资后，完整信息：", info_dict_2)
 
 ##### 删除
 
-```
+```python
 # 删除最后一个(随机删除,因为字典是无序的)
 print("删除最后一个键值对后，完整信息：", info_dict_3, "\t删除的键值对：", info_dict_3.popitem())
 # 指定删除1
@@ -1108,7 +1106,7 @@ print("全部删除后，完整信息：", info_dict_3)
 
  输出
 
-```
+```python
 删除最后一个键值对后，完整信息： {'name': 'Alex', 'position': 'CEO', 'salary': 60000, 'age': 20} 	删除的键值对： ('area', '上海')
 删除'name'的键值对后，完整信息： {'position': 'CEO', 'salary': 60000, 'age': 20} 	删除的值： Alex
 删除'age'的键值对后，完整信息： {'position': 'CEO', 'salary': 60000}
@@ -1119,7 +1117,7 @@ print("全部删除后，完整信息：", info_dict_3)
 
 ##### 循环
 
-```
+```python
 # 循环
 # 推荐，效率速度最快
 for key in info_dict_2:
@@ -1140,7 +1138,7 @@ for key, value in info_dict_2.items():
 
  输出
 
-```
+```python
 name ： Drake	position ： manager	salary ： 65000	
 name ： Drake	position ： manager	salary ： 65000	
 Drake	manager	65000	
@@ -1165,14 +1163,14 @@ name ： Drake	position ： manager	salary ： 65000
 
 ##### 去重
 
-```
+```python
 lans = ["Java", "Vue", "Java", "Vue", "Python"]
 print("langs去重：", list(set(lans)))
 ```
 
  输出
 
-```
+```python
 langs去重： ['Java', 'Python', 'Vue']
 ```
 
@@ -1180,7 +1178,7 @@ langs去重： ['Java', 'Python', 'Vue']
 
 ##### 查询
 
-```
+```python
 print("类型：", type(lan))
 print("信息：", lan)
 print("长度：", len(lan))
@@ -1189,7 +1187,7 @@ print("是否存在Java：", "Java" in lan)
 
  输出
 
-```
+```python
 类型： <class 'set'>
 信息： {'Java', 'Python', 'Ruby', 'Vue'}
 长度： 4
@@ -1200,7 +1198,7 @@ print("是否存在Java：", "Java" in lan)
 
 ##### 新增
 
-```
+```python
 lan.add("Golang")
 print("新增一个数值后：", lan)
 lan.add(("Netty", "SpringBoot", "ShardingSphere"))
@@ -1209,7 +1207,7 @@ print("新增一个元组后：", lan)
 
  输出
 
-```
+```python
 新增一个数值后： {'Java', 'Golang', 'Ruby', 'Python', 'Vue'}
 新增一个元组后： {'Java', 'Golang', 'Ruby', 'Python', 'Vue', ('Netty', 'SpringBoot', 'ShardingSphere')}
 ```
@@ -1218,7 +1216,7 @@ print("新增一个元组后：", lan)
 
 ##### 删除
 
-```
+```python
 lan.discard("Vue")  # 如果这个值不存在，do nothing.
 lan.remove("Java")  # 如果这个值不存在，报错
 lan.pop()  # 随机删除
@@ -1229,7 +1227,7 @@ print("全部删除：", lan)
 
  输出
 
-```
+```python
 删除三个元素后： {'Ruby', 'Python', ('Netty', 'SpringBoot', 'ShardingSphere')}
 全部删除： set()
 ```
@@ -1240,7 +1238,7 @@ print("全部删除：", lan)
 
 ##### 关系运算
 
-```
+```python
 print("lan的值：", lan)
 print("lans：", set(lans))
 
@@ -1272,7 +1270,7 @@ lan.symmetric_difference_update(set(lans))
 
  输出
 
-```
+```python
 lan的值： {('Netty', 'SpringBoot', 'ShardingSphere'), 'Python', 'Ruby'}
 lans： {'Python', 'Java', 'Vue'}
 
@@ -1300,7 +1298,7 @@ lan和lans的差集并更新(lan-langs)： {'Golang', ('Netty', 'SpringBoot', 'S
 
 ### 读取用户指令
 
-```
+```python
 name = input("请输入您的名字：")
 print("名字："+name)
 age = input("请输入您的年龄：")
@@ -1327,13 +1325,13 @@ print(msg)
 
 解决方法
 
-```
+```python
 age = int(input("请输入您的年龄："))
 ```
 
 > 用一个int包裹起来，应该是进行了一个类型转换，看下面这个例子
 >
-> ```
+> ```python
 > print(type(int("20")))
 > ```
 >
@@ -1347,7 +1345,7 @@ age = int(input("请输入您的年龄："))
 
 #### 算数运算
 
- 以下假设变量：**a=10，b=20**
+ 以下假设变量：**a = 10，b = 20**
 
 | 运算符 | 描述                                            | 实例                                               |
 | ------ | ----------------------------------------------- | -------------------------------------------------- |
@@ -1430,7 +1428,7 @@ age = int(input("请输入您的年龄："))
 | is     | is 是判断两个标识符是不是引用自一个对象     | **x is y**, 类似 **id(x) == id(y)** , 如果引用的是同一个对象则返回 True，否则返回 False |
 | is not | is not 是判断两个标识符是不是引用自不同对象 | **x is not y** ， 类似 **id(a) != id(b)**。如果引用的不是同一个对象则返回结果 True，否则返回 False。 |
 
-```
+```python
 print("-----is--is not-----")
 age = 2
 print(type(age))  # <class 'int'>
@@ -1449,7 +1447,7 @@ print(name is not None)  # False
 
  输出
 
-```
+```python
 -----is--is not-----
 <class 'int'>
 True
@@ -1467,13 +1465,13 @@ False
 
 #### 三元运算符
 
-```
+```python
 print("age大于3" if age > 3 else "age小于3")
 ```
 
  输出
 
-```
+```python
 age小于3
 ```
 
@@ -1483,7 +1481,7 @@ age小于3
 
  基本上在各个语言中，都是用语法if…else…来实现，可分为单分支、双分支、多分支
 
-```
+```python
 age = 49
 if age > 50:
     print("年龄大于50")
@@ -1493,7 +1491,7 @@ else:
     print("年龄小于50")
 ```
 
- 你会发现，上面的if代码里，每个条件的下一行都缩进了4个空格，这是为什么呢？这就是Python的一大特色，强制缩进，目的是为了让程序知道，每段代码依赖哪个条件，如果不通过缩进来区分，程序怎么会知道，当你的条件成立后，去执行哪些代码呢？
+ 你会发现，上面的if代码里，每个条件的下一行都缩进了**4个空格**，这是为什么呢？这就是Python的一大特色，强制缩进，目的是为了让程序知道，每段代码依赖哪个条件，如果不通过缩进来区分，程序怎么会知道，当你的条件成立后，去执行哪些代码呢？
 
 在其它的语言里，大多通过`{}`来确定代码块，在有`{}`来区分代码块的情况下，缩进的作用就只剩下让代码变的整洁了。
 
@@ -1511,13 +1509,13 @@ else:
 
 - break用于完全结束一个循环，跳出循环体执行循环后面的语句
 
-- continue和break有点类似，区别在于continue只是终止本次循环，接着还执行后面的循环，break则完全终止循环
+- **continue和break有点类似**，区别在于continue只是终止本次循环，接着还执行后面的循环，break则完全终止循环
 
 - 与其它语言else 一般只与if 搭配不同，在Python 中还有个while …else 语句
 
   while 后面的else 作用是指，**当while 循环正常执行完，中间没有被break 中止的话，就会执行else后面的语句**
 
-```
+```python
 import random
 
 count = 1
@@ -1825,13 +1823,15 @@ print("修改name的值为alex后，name的值：", name, " name_copy的值：",
 
 #### 介绍
 
- hash,一般翻译做散列、杂凑，或音译为哈希，是把任意长度的[输入](https://baike.baidu.com/item/输入/5481954)（又叫做预映射pre-image）通过散列算法变换成固定长度的[输出](https://baike.baidu.com/item/输出/11056752)，该输出就是散列值。这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间。
+ hash,一般翻译做散列、杂凑，或音译为哈希，是把任意长度的[输入](https://baike.baidu.com/item/输入/5481954)（又叫做预映射pre-image）通过`散列算法`变换成固定长度的[输出](https://baike.baidu.com/item/输出/11056752)，该输出就是`散列值`。这种转换是一种**压缩**映射，也就是，**散列值的空间通常远小于输入的空间。**
 
  它其实就是一个算法，最简单的算法就是加减乘除，比方，我设计个数字算法，输入+7=输出，比如我输入1，输出为8；输入2，输出为9。
 
- 哈希算法不过是一个更为复杂的运算，它的输入可以是字符串，可以是数据，可以是任何文件，经过哈希运算后，变成一个固定长度的输出，该输出就是哈希值。**但是哈希算法有一个很大的特点，就是你不能从结果推算出输入,所以又称为不可逆的算法**
+ 哈希算法不过是一个更为复杂的运算，它的输入可以是字符串，可以是数据，可以是任何文件，经过哈希运算后，变成一个固定长度的输出，该输出就是哈希值。
 
-```
+​		**但是哈希算法有一个很大的特点，就是你不能从结果推算出输入,所以又称为不可逆的算法**
+
+```python
 print(hash("冲呀"))  # -1373361932094575644
 print(hash("莫崽子"))  # 2455353328478895534
 ```
@@ -1842,9 +1842,9 @@ print(hash("莫崽子"))  # 2455353328478895534
 
 #### 哈希特性
 
- **不可逆**：在具备编码功能的同时，哈希算法也作为一种加密算法存在。即，你无法通过分析哈希值计算出源文件的样子，换句话说：你不可能通过观察香肠的纹理推测出猪原来的样子。
+ **不可逆**：在具备编码功能的同时，哈希算法也作为一种加密算法存在。即，你无法通过分析哈希值计算出源文件的样子，换句话说：**你不可能通过观察香肠的纹理推测出猪原来的样子**。
 
- **计算极快**：20G高清电影和一个5K文本文件复杂度相同，计算量都极小，可以在0.1秒内得出结果。也就是说，不管猪有多肥，骨头多硬，做成香肠都只要眨眨眼的时间，
+ **计算极快**：20G高清电影和一个5K文本文件复杂度相同，计算量都极小，可以在0.1秒内得出结果。也就是说，**不管猪有多肥，骨头多硬，做成香肠都只要眨眨眼的时间**，
 
 
 
@@ -1852,9 +1852,9 @@ print(hash("莫崽子"))  # 2455353328478895534
 
 哈希算法的不可逆特性使其在以下领域使用广泛
 
-1. 密码，我们日常使用的各种电子密码本质上都是基于hash的，你不用担心支付宝的工作人员会把你的密码泄漏给第三方，因为你的登录密码是先经过 hash+各种复杂算法得出密文后 再存进支付宝的数据库里的
-2. 文件完整性校验，通过对文件进行hash，得出一段hash值 ，这样文件内容以后被修改了，hash值就会变。 MD5 Hash算法的”数字指纹”特性，使它成为应用最广泛的一种文件完整性[校验和](https://baike.baidu.com/item/校验和)(Checksum)算法，不少Unix系统有提供计算md5 checksum的命令。
-3. 数字签名，[数字签名技术](https://baike.baidu.com/item/数字签名技术)是将摘要信息用发送者的私钥加密，与[原文](https://baike.baidu.com/item/原文)一起传送给接收者。接收者只有用发送者的公钥才能解密被加密的摘要信息，然后用[HASH函数](https://baike.baidu.com/item/HASH函数)对收到的[原文](https://baike.baidu.com/item/原文)产生一个摘要信息，与解密的摘要信息对比。如果相同，则说明收到的信息是完整的，在传输过程中没有被修改，否则说明信息被修改过，因此数字签名能够验证信息的完整性。
+1. **密码**，我们日常使用的各种电子密码本质上都是基于hash的，你不用担心支付宝的工作人员会把你的密码泄漏给第三方，因为你的登录密码是先经过 hash+各种复杂算法得出密文后 再存进支付宝的数据库里的
+2. **文件完整性校验**，通过对文件进行hash，得出一段hash值 ，这样文件内容以后被修改了，hash值就会变。 MD5 Hash算法的”数字指纹”特性，使它成为应用最广泛的一种文件完整性[校验和](https://baike.baidu.com/item/校验和)(Checksum)算法，不少Unix系统有提供计算md5 checksum的命令。
+3. **数字签名**，[数字签名技术](https://baike.baidu.com/item/数字签名技术)是将摘要信息用发送者的私钥加密，与[原文](https://baike.baidu.com/item/原文)一起传送给接收者。接收者只有用发送者的公钥才能解密被加密的摘要信息，然后用[HASH函数](https://baike.baidu.com/item/HASH函数)对收到的[原文](https://baike.baidu.com/item/原文)产生一个摘要信息，与解密的摘要信息对比。如果相同，则说明收到的信息是完整的，在传输过程中没有被修改，否则说明信息被修改过，因此数字签名能够验证信息的完整性。
 
 此外，hash算法在区块链领域也使用广泛。
 
@@ -1866,7 +1866,7 @@ Python 中基于hash的2个数据类型是`dict` and `set` , 之前说dict查询
 
  解析：假设我要存14亿人的基本信息
 
-```
+```python
 data = {
     "张三":[23742364782642342323234,28,"山东济南"],
     "李四":[12124234232311214458271,25,"北京昌平"],
@@ -1884,7 +1884,7 @@ data = {
 
  dict会把这些数字`按大小排序`好放在一个列表里kd = [-10, 53, 67, 81, 99, 123]
 
- 当我们想查找”赵六”的信息时， 会把“赵六”先hash, 得到99这个值，然后拿这个值去到kd列表里找，想象这个列表有14亿个值 ，如何快速找到99？ 二分法就行，具体看剖析视频。
+ 当我们想查找”赵六”的信息时， 会把“赵六”先hash, 得到99这个值，然后拿这个值去到kd列表里找，想象这个列表有14亿个值 ，如何快速找到99？ **二分法就行，具体看剖析视频。**
 
  只要找到了99的位置，就可以定位到赵六对应的value的值了。 通过2分法查找，每次数据量都会少一半，这样查找最多31次(2**31=2147483648)就能从20亿信息里找到这个人的信息。
 
@@ -1902,7 +1902,7 @@ data = {
 
 #### 浅拷贝
 
-```
+```python
 data = {
     "name": "alex",
     "age": 18,
@@ -1946,19 +1946,17 @@ data_copy数据：{'name': 'alex', 'age': 20, 'scores': {'语文': 140, '数学'
 
  看输出 ， 很神奇，两个Dict里age的值是独立的，但score字典里的分数值貌似是共享的
 
- **因为浅copy会仅复制dict的第一层数据，更深层的scores下面的值依然是共享一份**。
+ **`因为浅copy会仅复制dict的第一层数据，更深层的scores下面的值依然是共享一份`**。
 
 [![img](E:\Development\Typora\images\watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NzY2ODgz,size_16,color_FFFFFF,t_70-166282932621424.png)](https://img-blog.csdnimg.cn/20200728110358108.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NzY2ODgz,size_16,color_FFFFFF,t_70)
 
  注意图中2个dict中的name都是alex,内存地址也一样，在没改前，两个name都确实指向同一个内存地址，但只要改任何一个的值，内存地址都会变更， 如age这个key一样。
 
-
-
 #### 深拷贝
 
  若你想彻底使上面的2个dict完全独立，无论有多少层数据。那就要用python工具包里的一个工具了，
 
-```
+```python
 import copy
 
 data = {
@@ -1990,7 +1988,7 @@ print("修改后data的scores的内存地址：", id(data["scores"]), "\tdata_co
 
  输出
 
-```
+```python
 data的内存地址： 2388009767616 
 data_copy的内存地址： 2388041388608
 data的age的内存地址： 140705936513216 	data_copy的age的内存地址： 140705936513216
@@ -2008,13 +2006,13 @@ data的scores的内存地址： 2388009767552 	data_copy的scores的内存地址
 
 ### 编码的转换
 
- 在py3里，**内存里的字符串是以unicode编码的**，unicode的其中一个特性就是跟所有语言编码都有映射关系。所以你的utf-8格式的文件，在windows电脑上若是不能看，就可以把utf-8先解码成unicode,再由unicode编码成gbk就可以了。
+ 在py3里，**内存里的字符串是以unicode编码的**，`unicode的其中一个特性就是跟所有语言编码都有映射关系`。所以你的utf-8格式的文件，在windows电脑上若是不能看，就可以把utf-8先解码成unicode,再由unicode编码成gbk就可以了。
 
 [![img](E:\Development\Typora\images\20200728113824472.png)](https://img-blog.csdnimg.cn/20200728113824472.png)
 
  注意，不管在Windows or Mac or Linux上，你的pycharm IDE都可以支持各种文件编码，所以即使是utf-8的文件，在windows下的pycharm里也可以正常显示
 
-```
+```python
 name = "张龙子"
 name_GBK = name.encode("GBK")
 print("编码格式：", chardet.detect(name_GBK)["encoding"], "数据：", name_GBK, "数据：", name_GBK.decode("GBK"))
@@ -2043,8 +2041,8 @@ b'\xe5\xbc\xa0\xe9\xbe\x99\xe5\xad\x90'
 
  用python操作文件也差不多：
 
-```
-f=open(filename)  # 打开文件
+```python
+f = open(filename)  # 打开文件
 f.write("我是野生程序员") # 写操作
 f.read()  #读操作
 f.close() #保存并关闭
@@ -2062,7 +2060,7 @@ f.close() #保存并关闭
 
 ### 创建模式
 
-```
+```python
 # 新增文件
 file = open(file="F:\\Animation\\0.txt", mode="w")
 file.write("""开始
@@ -2077,7 +2075,7 @@ file.close()
 
 ### 追加模式
 
-```
+```python
 # 追加文件
 file = open(file="F:\\Animation\\1.txt", mode="a")
 file.write("增加一行\n")
@@ -2088,7 +2086,7 @@ file.close()
 
 ### 只读模式
 
-```
+```python
 import chardet
 
 # 只读文件
@@ -2114,7 +2112,7 @@ file.close()
 
  输出
 
-```
+```python
 是否可读： True
 是否可写： False
 此时位置： 2 始
@@ -2388,11 +2386,10 @@ def open(file, mode='r', buffering=None, encoding=None, errors=None, newline=Non
 
 ### 定义
 
-```
+```python
 # 定义
 def hello(note):
     print("Hello Function！{name}".format(name=note))
-
 # 调用
 hello("Go!")
 ```
@@ -2405,21 +2402,20 @@ hello("Go!")
 
 #### **形参变量**
 
- 只有在被调用时才分配内存单元，在调用结束时，即刻释放所分配的内存单元。因此，形参只在函数内部有效。函数调用结束返回主调用函数后则不能再使用该形参变量
+ 	只有在被调用时才分配内存单元，在调用结束时，即刻释放所分配的内存单元。因此，**形参只在函数内部有效**。函数调用结束返回主调用函数后则不能再使用该形参变量
 
 #### **实参**
 
- 可以是常量、变量、表达式、函数等，无论实参是何种类型的量，在进行函数调用时，它们都必须有确定的值，以便把这些值传送给形参。因此应预先给实参赋值
+ 	可以是常量、变量、表达式、函数等，无论实参是何种类型的量，在进行函数调用时，它们都必须有确定的值，以便把这些值传送给形参。因此应预先给实参赋值
 
 [![img](E:\Development\Typora\images\watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NzY2ODgz,size_16,color_FFFFFF,t_70-166282935720348.png)](https://img-blog.csdnimg.cn/20200728120051750.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NzY2ODgz,size_16,color_FFFFFF,t_70)
 
 #### 默认参数
 
-```
+```python
 # 默认参数
 def calc(a, b, c=2):
     return a ** b // c
-
 
 print(calc(3, 3))
 print(calc(3, 3, 4))
@@ -2480,7 +2476,7 @@ stu_register("王山炮",22,age=25,country='JP' )
 
  若你的函数在定义时不确定用户想传入多少个参数，就可以使用非固定参数
 
-```
+```python
 def stu_register(name, age, course='PY', country='CN', *args, **kwargs):
     print("----注册学生信息------")
     print("姓名:", name)
@@ -2493,11 +2489,11 @@ stu_register("Drake", 18, phone=14456789521, sex="M")
 stu_register("Drake", 18, 'Java', 'EN', 14456789521, "M")
 ```
 
- args是一个元组，kwargs是一个字典
+ `args是一个元组，kwargs是一个字典`
 
  输出
 
-```
+```python
 ----注册学生信息------
 姓名: Drake
 age: 18
@@ -2516,12 +2512,12 @@ age: 18
 
 ### 函数返回值与作用域
 
- 函数外部的代码要想获取函数的执行结果，就可以在函数里用return语句把结果返回
+ 函数外部的代码要想获取函数的执行结果，就可以在函数里用`return`语句把结果返回
 
 - 函数在执行过程中只要遇到return语句，就会停止执行并返回结果，so 也可以理解为 return 语句代表着函数的结束
 - 如果未在函数中指定return,那这个函数的返回值为None
 
-```
+```python
 def get_str():
     return "你好"
 
@@ -2538,18 +2534,18 @@ print(get_tuple())
 
  输出
 
-```
+```python
 你好
 ('好呀', '去吧', '嗯呐')
 ```
 
-> 当有多个值时，返回的是一个元组
+> 当有多个值时，返回的是一个`元组`
 
 
 
 ### 全局与局部变量
 
-```
+```python
 name = "定义一个全局变量"
 
 
@@ -2564,7 +2560,7 @@ print("方法外输出name：", name)
 
  输出
 
-```
+```python
 方法内输出name： 局部变量
 方法外输出name： 定义一个全局变量
 ```
@@ -2583,7 +2579,7 @@ print("方法外输出name：", name)
 
 [![img](E:\Development\Typora\images\watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NzY2ODgz,size_16,color_FFFFFF,t_70-166282935720349.jpeg)](https://img-blog.csdnimg.cn/20200728200935243.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NzY2ODgz,size_16,color_FFFFFF,t_70)
 
-```
+```python
 name = "定义一个全局变量"
 
 def change_name_global():
@@ -2597,7 +2593,7 @@ print("方法外输出name：", name)
 
  输出
 
-```
+```python
 方法内输出name： 局部变量
 方法外输出name： 局部变量
 ```
@@ -2608,7 +2604,7 @@ print("方法外输出name：", name)
 
 ### 传递列表、字典、集合产生的现象
 
-```
+```python
 d = {"name":"Alex","age":26,"hobbie":"大保健"}
 l = ["Rebeeca","Katrina","Rachel"]
 name = "你去吧"
@@ -2622,7 +2618,7 @@ print(d,l,name)
 
  输出
 
-```
+```python
 {'name': 'Alex', 'age': 26, 'hobbie': '学习'} ['Rebeeca', 'Katrina', 'Rachel', 'XiaoYun'] 你去吧
 ```
 
@@ -2632,7 +2628,7 @@ print(d,l,name)
 
 ### 嵌套函数
 
-```
+```python
 def fun1():
     name = "fun1"
     def fun2():
@@ -2646,7 +2642,7 @@ fun1()
 
  输出
 
-```
+```python
 fun2
 fun1
 ```
@@ -2657,9 +2653,8 @@ fun1
 
 ### 匿名函数
 
-```
+```python
 fun = lambda x, y: x**y
-
 print(fun(2, 3))
 ```
 
@@ -2671,7 +2666,7 @@ print(fun(2, 3))
 
  匿名函数用着还是很爽的好吧，这里举个例子：
 
-```
+```python
 res = map(lambda x:x**2, [1,5,7,2,9])
 for value in res:
     print(value)
@@ -2679,7 +2674,7 @@ for value in res:
 
  输出
 
-```
+```python
 1
 25
 49
@@ -2693,7 +2688,7 @@ for value in res:
 
  变量可以指向函数，函数的参数能接收变量，那么一个函数就可以接收另一个函数作为参数，这种函数就称之为高阶函数。
 
-```
+```python
 def add(x, y):
     return x+y
 
@@ -2707,7 +2702,7 @@ print(calc(5, 7, 2, add))
 
  输出
 
-```
+```python
 10
 ```
 
@@ -2726,7 +2721,7 @@ print(calc(5, 7, 2, add))
 
 > *内置参数详解* https://docs.python.org/3/library/functions.html?highlight=built#ascii
 
-```
+```python
 abs # 求绝对值
 
 all #Return True if bool(x) is True for all values x in the iterable.If the iterable is empty, return True.
@@ -2874,7 +2869,7 @@ list(zip(a,b)) #得结果
 
 ### 名称空间
 
- 又名name space, 顾名思义就是存放名字的地方，存什么名字呢？举例说明，若变量x=1，1存放于内存中，那名字x存放在哪里呢？**名称空间正是存放名字x与1绑定关系的地方**
+ 又名name space, 顾名思义就是存放名字的地方，存什么名字呢？举例说明，若变量 x=1，1存放于内存中，那名字x存放在哪里呢？**名称空间正是存放名字x与1绑定关系的地方**
 
  python里面有很多名字空间，每个地方都有自己的名字空间，互不干扰，不同空间中的两个相同名字的变量之间没有任何联系。
 
@@ -2892,7 +2887,7 @@ list(zip(a,b)) #得结果
 - 全局范围：全局存活，全局有效
 - 局部范围：临时存活，局部有效
 
-> 查看作用域方法 globals(),locals()
+> 查看作用域方法	 globals()	,	locals()
 
 
 
@@ -3030,7 +3025,7 @@ welcome login....
 
  方式一：
 
-```
+```python
 for index,i in enumerate(a):
     a[index] +=1
 print(a)
@@ -3038,23 +3033,21 @@ print(a)
 
  方式二(一般想到的是这种方法)：
 
-```
+```python
 a = map(lambda x:x+1, a)
 ```
 
  方式三(牛逼呀)：
 
-```
+```python
 print([i+1 for i in a])
 ```
-
-
 
 ### 生成器generator
 
  通过列表生成式，我们可以直接创建一个列表。但是，受到内存限制，列表容量肯定是有限的。而且，创建一个包含100万个元素的列表，不仅占用很大的存储空间，如果我们仅仅需要访问前面几个元素，那后面绝大多数元素占用的空间都白白浪费了。比如我要循环100万次，按py的语法，for i in range(1000000)会先生成100万个值的列表。但是循环到第50次时，我就不想继续了，就退出了。但是90多万的列表元素就白为你提前生成了。
 
-```
+```python
 for i in range(1000000):
     if i == 50: 
         break
@@ -3069,7 +3062,7 @@ for i in range(1000000):
 
  要创建一个generator，有很多种方法。第一种方法很简单，只要把一个列表生成式的`[]`改成`()，`就创建了一个generator：
 
-```
+```python
 temp = (x**x for x in range(10))
 print(type(temp))
 print(next(temp))
@@ -3080,7 +3073,7 @@ for i in temp:
     print(i, end="\t")
 ```
 
- 输出
+ 输出v
 
 ```
 <class 'generator'>
@@ -3279,7 +3272,7 @@ for value in iterator:
 
 ### 模块导入&调用
 
-```
+```python
 import module_a  #导入
 from module import xx
 from module.xx.xx import xx as rename #导入后重命令
@@ -5489,7 +5482,7 @@ taylor drake
 
  可以创建个单独的类，存储2个人的关系状态，2个人在查自己的感情状态时，都到这个单独的实例里来查
 
-```
+```python
 class RelationShip:
 
     def make_couple(self, obj1, obj2):
@@ -5517,8 +5510,6 @@ class Person:
         pass
 
 
-
-
 relation = RelationShip()
 p1 = Person("drake", 25, "M", relation)
 p2 = Person("taylor", 24, "F", relation)
@@ -5535,11 +5526,54 @@ p1.relation.break_up()
 
  输出
 
-```
+```python
 [<__main__.Person object at 0x000002AF7B375C10>] 和 [<__main__.Person object at 0x000002AF7B3E7880>] 确定了男女关系...
 drake 的对象： taylor
 taylor 的对象： drake
 drake 和 taylor 分手了
+```
+
+
+
+还可以这样：
+
+```python
+class GirlFriend:
+    def __init__(self, name):
+        self.name = name
+        self.relationship = None
+        pass
+
+
+class BoyFriend:
+    def __init__(self, name):
+        self.name = name
+        self.relationship = None
+        pass
+
+
+class RelationShip:
+    def __init__(self, obj1, obj2):
+        # 建立关系
+        self.couple = [obj1, obj2]
+        pass
+
+    def getTarget(self, obj):
+        for person in self.couple:
+            if person != obj:
+                return person
+        pass
+
+
+gf = GirlFriend("小玲")
+bf = BoyFriend("sunny")
+rs = RelationShip(gf, bf)
+
+gf.relationship = rs
+bf.relationship = rs
+
+print(rs.getTarget(bf).name)
+print(gf.relationship.getTarget(gf).name)
 ```
 
 

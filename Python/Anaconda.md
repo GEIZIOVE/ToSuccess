@@ -411,4 +411,4 @@ jupyter notebook
 
 当然，并不是每个人都能一帆风顺。可能存在的问题可以参考链接：
 
-[conda 环境问题](https://stackoverflow.com/questions/58068818/how-to-use-jupyter-notebooks-in-a-conda-environment/58068850#58068850)
+[conda 环境问题](https://stackoverflow.com/questions/58068818/how-to-use-jupyter-notebooks-in-a-conda-environment/58068850#58068850face_detection_and_recognition
