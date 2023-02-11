@@ -4,7 +4,7 @@
 
 ## Keras2.0
 
-### 1.Why Keras
+### 1.为什么选用Keras
 
 ​		你可能会问，为什么不学TensorFlow呢？明明tensorflow才是目前最流行的machine learning库之一啊。其实，它并没有那么好用，tensorflow和另外一个功能相近的toolkit theano，它们是非常flexible的，你甚至可以把它想成是一个微分器，它完全可以做deep learning以外的事情，因为它的作用就是帮你算微分，拿到微分之后呢，你就可以去算gradient descent之类，而这么flexible的toolkit学起来是有一定的难度的，你没有办法在半个小时之内精通这个toolkit。
 
@@ -16,13 +16,13 @@
 
 [![img](E:/Development/Typora/images/keras.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/keras.png)		接下来我们用手写数字识别的demo来介绍一下"Hello world" of deep learning
 
-### 2.prepare data
+### 2.准备数据
 
 使用的data是MNIST的Data：http://yann.lecun.com/exdb/mnist/
 
 Keras提供了自动下载MNIST data的function：http://keras.io/datasets/
 
-### 3.process
+### 3.Process
 
 首先要先导入keras包：`from keras.models import Sequential`
 
@@ -126,12 +126,12 @@ model.compile(loss='categorical crossentropy',
 
 ### 4.Mini-batch
 
-​		这里有一个秘密，就是我们在做**deep learning**的**gradient descent**的时候，并不会真的去minimize total loss，那我们做的是什么呢？我们会把Training data分成一个一个的batch，比如说你的Training data一共有1w张image，每次random选100张image作为一个batch(我的理解是，**先将原来的image分布随机打乱，然后再按顺序每次挑出batch_size张image组成一个batch，这样才能保证所有的data都有被用到，且不同的batch里不会出现重复的data**)
+​		这里有一个秘密，就是我们在做**deep learning**的**gradient descent**的时候，`并不会真的去minimize total loss`，那我们做的是什么呢？我们会把Training data分成一个一个的batch，比如说你的Training data一共有1w张image，每次random选100张image作为一个batch(我的理解是，**先将原来的image分布随机打乱，然后再按顺序每次挑出batch_size张image组成一个batch，这样才能保证所有的data都有被用到，且不同的batch里不会出现重复的data**)
 
 -   像gradient descent一样，先随机initialize network的参数
 -   选第一个batch出来，然后计算这个batch里面的所有element的total loss，$L'=l^1+l^{31}+...$，接下来根据$L'$去update参数，也就是计算$L'$对所有参数的偏微分，然后update参数
 -   再选择第二个batch，现在这个batch的total loss是$L''=l^2+l^{16}+...$，接下来计算$L''$对所有参数的偏微分，然后update参数
--   反复做这个process，直到把所有的batch通通选过一次，所以假设你有100个batch的话，你就把这个参数update 100次，把所有batch看过一次，就叫做一个epoch
+-   反复做这个process，直到把所有的batch通通选过一次，所以假设你有100个batch的话，你就把这个参数update 100次，把所有batch看过一次，就叫做一个**epoch**
 -   重复epoch的过程，所以你在train network的时候，你会需要好几十个epoch，而不是只有一个epoch
 
 ​		整个训练的过程类似于**stochastic gradient descent**，不是将所有数据读完才开始做gradient descent的，而是拿到一部分数据（一个batch）就做一次gradient descent
@@ -142,15 +142,15 @@ model.compile(loss='categorical crossentropy',
 
 #### 5.1batch size太小会导致不稳定，速度上也没有优势
 
-​		前面已经提到了，**stochastic gradient descent**速度快，表现好，既然如此，为什么我们还要用Mini-batch呢？这就涉及到了一些实际操作上的问题，让我们必须去用Mini-batch
+​		前面已经提到了，**stochastic gradient descent**速度快，表现好，既然如此，为什么我们还要用Mini-batch呢？这就涉及到了一些实际操作上的问题，让我们必须去用Mini-batch。
 
 ​		举例来说，我们现在有50000个 examples，如果我们把batch size设置为1，就是stochastic gradient descent，那在一个epoch里面，就会 update 50000次参数；如果我们把batch size设置为10，在一个epoch里面，就会update 5000次参数。
 
-看上去stochastic gradient descent的速度貌似是比较快的，它一个epoch更新参数的次数比batch size等于10的情况下要快了10倍，但是！我们好像忽略了一个问题，**我们之前一直都是下意识地认为不同batch size的情况下运行一个epoch的时间应该是相等的**，然后我们才去比较每个epoch所能够update参数的次数，可是它们又怎么可能会是相等的呢？
+​		看上去stochastic gradient descent的速度貌似是比较快的，它一个epoch更新参数的次数比batch size等于10的情况下要快了10倍，但是！我们好像忽略了一个问题，**我们之前一直都是下意识地认为不同batch size的情况下运行一个epoch的时间应该是相等的**，然后我们才去比较每个epoch所能够update参数的次数，可是它们又怎么可能会是相等的呢？
 
 ​		实际上，当你batch size设置不一样的时候，一个epoch需要的时间是不一样的，以GTX 980为例，下图是对总数为50000笔的Training data设置不同的batch size时，每一个epoch所需要花费的时间
 
--   case1：如果batch size设为1，也就是stochastic gradient descent，一个epoch要花费166秒，接近3分钟
+-   case1：如果batch size设为1，也就是`stochastic gradient descent`，一个epoch要花费166秒，接近3分钟
 -   case2：如果batch size设为10，那一个epoch是17秒
 
 ​		也就是说，当stochastic gradient descent算了一个epoch的时候，batch size为10的情况已经算了近10个epoch了；所以case1跑一个epoch，做了50000次update参数的同时，case2跑了十个epoch，做了近5000*10=50000次update参数；你会发现batch size设1和设10，update参数的次数几乎是一样的

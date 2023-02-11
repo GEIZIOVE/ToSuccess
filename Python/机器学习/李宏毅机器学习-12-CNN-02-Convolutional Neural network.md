@@ -6,13 +6,13 @@
 
 >   人们常常会说，deep learning就是一个黑盒子，你learn完以后根本就不知道它得到了什么，所以会有很多人不喜欢这种方法，这篇文章就讲述了三个问题：What does CNN do？Why CNN？How to design CNN?
 
-### 1.What does CNN learn？
+### 1.CNN到底学到了什么？
 
-#### 1.1what is intelligent
+#### 1.1什么是 intelligent？
 
 ​		如果今天有一个方法，它可以让你轻易地理解为什么这个方法会下这样的判断和决策的话，那其实你会觉得它不够**intelligent**；它必须要是你无法理解的东西，这样它才够**intelligent**，至少你会感觉它很**intelligent**
 
-​		所以，大家常说**deep learning**就是一个黑盒子，你learn出来以后，根本就不知道为什么是这样子，于是你会感觉它很**intelligent**，但是其实还是有很多方法可以分析的，今天我们就来示范一下怎么分析CNN，看一下它到底学到了什么
+​		所以，大家常说**deep learning**就是一个黑盒子，你learn出来以后，根本就不知道为什么是这样子，于是你会感觉它很**intelligent**，但是其实还是有很多方法可以分析的，今天我们就来示范一下怎么分析CNN，看一下它到底学到了什么。
 
 [![img](E:/Development/Typora/images/cnn-keras3-16699918328971.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/cnn-keras3.png)
 
@@ -28,7 +28,7 @@
 
 [![img](E:/Development/Typora/images/kth-filter.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/kth-filter.png)
 
-​		接下来我们define一个$a^k$叫做**Degree of the activation of the k-th filter**，这个值表示现在的第k个filter，它有多被activate，有多被“启动”，**直观来讲就是描述现在input的东西跟第k个filter有多接近**，它对filter的激活程度有多少第k个filter被启动的degree $a^k$就定义成，它与input进行卷积所输出的output里所有element的summation，以上图为例，就是这11*11的output matrix里所有元素之和，用公式描述如下：
+​		接下来我们define一个$a^k$叫做**Degree of the activation of the k-th filter**，这个值表示现在的第k个filter，它有多被activate，有多被“启动”，**直观来讲就是描述现在input的东西跟第k个filter有多接近**，它对filter的激活程度有多少。第k个filter被启动的degree $a^k$就定义成，它与input进行卷积所输出的output里所有element的summation，以上图为例，就是这11*11的output matrix里所有元素之和，用公式描述如下：
 $$
 a^k=\sum\limits^{11}_{i=1}\sum\limits^{11}_{j=1}
 $$
@@ -48,7 +48,7 @@ $$
 
 ​		上图就是得到的结果，**50个 filter 理论上可以分别找50张 image 使`对应`的activation最大**，这里仅挑选了其中的12张image作为展示，这些image有一个共同的特征，它们里面都是一些**反复出现的某种texture(纹路)**，比如说第三张image上布满了小小的斜条纹，这意味着第三个filter的工作就是detect图上有没有斜条纹，要知道现在每个filter检测的都只是图上一个小小的范围而已，所以图中一旦出现一个小小的斜条纹，这个filter就会被activate，相应的output也会比较大，所以如果整张image上布满这种斜条纹的话，这个时候它会最兴奋，filter的activation程度是最大的，相应的output值也会达到最大
 
-​		因此每个filter的工作就是去detect某一种pattern，detect某一种线条，上图所示的filter所detect的就是不同角度的线条，所以今天input有不同线条的话，某一个filter会去找到让它兴奋度最高的匹配对象，这个时候它的output就是最大的
+​		==因此每个filter的工作就是去detect某一种pattern，detect某一种线条，上图所示的filter所detect的就是不同角度的线条，所以今天input有不同线条的话，某一个filter会去找到让它兴奋度最高的匹配对象，这个时候它的output就是最大的==
 
 #### 1.3what does neuron do
 

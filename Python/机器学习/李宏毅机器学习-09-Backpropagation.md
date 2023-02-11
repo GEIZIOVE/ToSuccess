@@ -2,17 +2,17 @@
 
 >   主要介绍反向传播基础理论。
 
-## Backpropagation
+## Backpropagation-反向传播
 
 >   Backpropagation(反向传播)，就是告诉我们用gradient descent来train一个neural network的时候该怎么做，它只是求微分的一种方法，而不是一种新的算法
 
-### 1.Gradient Descent
+### 1.Gradient Descent（梯度下降）
 
 ​		gradient descent的使用方法，跟前面讲到的linear Regression或者是Logistic Regression是一模一样的，唯一的区别就在于当它用在neural network的时候，network parameters $\theta=w_1,w_2,...,b_1,b_2,...$里面可能会有将近million个参数.
 
 ​		所以现在最大的困难是，如何有效地把这个近百万维的vector给计算出来，这就是Backpropagation要做的事情，所以**Backpropagation并不是一个和gradient descent不同的training的方法，它就是gradient descent，它只是一个比较有效率的算法**，让你在计算这个gradient的vector的时候更有效率
 
-### 2.Chain Rule
+### 2.Chain Rule(链式法则)
 
 ​		Backpropagation里面并没有什么高深的数学，你唯一需要记得的就只有`Chain Rule`(链式法则)
 
@@ -22,7 +22,7 @@
 
 ​		我们把training data里任意一个样本点$x^n$代到neural network里面，它会output一个$y^n$，我们把这个output跟样本点本身的**label**标注的target $\hat{y}^n$作**cross entropy**，这个**交叉熵定义了output $y^n$和target $\hat{y}^n$之间的距离$l^n(\theta)$**，如果cross entropy比较大的话，说明output和target之间距离很远，这个network的parameter的loss是比较大的，反之则说明这组parameter是比较好的
 
-​		然后summation 包含所有training data的cross entropy $l^n(\theta)$，得到total loss $L(\theta)$，这就是我们的loss function，用这个$L(\theta)$)对某一个参数w做偏微分，表达式如下：
+​		然后**summation** 包含所有training data的cross entropy $l^n(\theta)$，得到total loss $L(\theta)$，这就是我们的loss function，用这个$L(\theta)$)对某一个参数w做偏微分，表达式如下：
 
 
 $$
@@ -30,36 +30,42 @@ $$
 $$
 ​		这个表达式告诉我们，只需要考虑如何计算**对某一笔**data的$\frac{\partial l^n(\theta)}{\partial w}$，再将所有training data的cross entropy对参数w的偏微分累计求和，就可以把total loss对某一个参数w的偏微分给计算出来。
 
-​		我们先考虑某一个neuron，先拿出上图中被红色三角形圈住的neuron，假设只有两个input $x_1,x_2$，通过这个neuron，我们先得到$z=b+w_1 x_1+w_2 x_2$，然后经过activation function从这个neuron中output出来，作为后续neuron的input，再经过了非常非常多的事情以后，会得到最终的output $y_1,y_2$
+​		我们先考虑某一个neuron，先拿出上图中被红色三角形圈住的neuron，假设只有两个input $x_1,x_2$，通过这个neuron，我们先得到  $z=b+w_1 x_1+w_2 x_2$，然后经过activation function从这个神经元中output出来，作为后续neuron的input，再经过了非常非常多的事情以后，会得到最终的output $y_1,y_2$
 
-​		现在的问题是这样：$\frac{\partial l}{\partial w}$该怎么算？按照chain rule，**可以把它拆分成两项**，$\frac{\partial l}{\partial w}=\frac{\partial z}{\partial w} \frac{\partial l}{\partial z}$，这两项分别去把它计算出来。前面这一项是比较简单的，后面这一项是比较复杂的。
+​		现在的问题是这样：$\frac{\partial l}{\partial w}$该怎么算？按照chain rule，**可以把它拆分成两项**，这两项分别去把它计算出来。前面这一项是比较简单的，后面这一项是比较复杂的。
+$$
+\frac{\partial l}{\partial w}=\frac{\partial z}{\partial w} \frac{\partial l}{\partial z}
+$$
 
-​		计算前面这一项$\frac{\partial z}{\partial w}$的这个process，我们称之为Forward pass；而计算后面这项$\frac{\partial l}{\partial z}$的process，我们称之为Backward pass
+
+​		计算前面这一项$\frac{\partial z}{\partial w}$的这个process，我们称之为`Forward pass`；而计算后面这项$\frac{\partial l}{\partial z}$的process，我们称之为`Backward pass`
 
 [![img](E:/Development/Typora/images/bp-forward-backward.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/bp-forward-backward.png)
 
-### 3.Forward pass
+### 3.Forward pass（前向传播）
 
 ​		先考虑$\frac{\partial z}{\partial w}$这一项，完全可以秒算出来，$\frac{\partial z}{\partial w_1}=x_1 ,\ \frac{\partial z}{\partial w_2}=x_2$
 
-​		它的规律是这样的：**求$\frac{\partial z}{\partial w}$，就是看w前面连接的input是什么，那微分后的$\frac{\partial z}{\partial w}$值就是什么**，因此只要计算出neural network里面每一个neuron的output就可以知道任意的 z 对 w 的偏微分
+​		它的规律是这样的：**求$\frac{\partial z}{\partial w}$，就是看w前面连接的input是什么，那微分后的$\frac{\partial z}{\partial w}$值就是什么**，因此只要计算出neural network里面每一个neuron的output就可以知道任意的 $z$ 对 $w$ 的偏微分
 
 -   比如input layer作为neuron的输入时，$w_1$前面连接的是$x_1$，所以微分值就是$x_1$；$w_2$前面连接的是$x_2$，所以微分值就是$x_2$
--   比如hidden layer作为neuron的输入时，那该neuron的input就是前一层neuron的output，于是$\frac{\partial z}{\partial w}$的值就是前一层的z经过activation function之后输出的值(下图中的数据是假定activation function为sigmoid function得到的)
+-   比如hidden layer作为neuron的输入时，那该neuron的input就是前一层neuron的output，于是$\frac{\partial z}{\partial w}$的值就是**前一层的 $z$ 经过activation function之后输出的值**(下图中的数据是假定activation function为sigmoid function得到的)
 
 [![img](E:/Development/Typora/images/forward-pass.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/forward-pass.png)
 
-### 4.Backward pass
+### 4.Backward pass（反向传播）
 
 ​		再考虑$\frac{\partial l}{\partial z}$这一项，它是比较复杂的，这里我们依旧假设activation function是sigmoid function
 
 #### 4.1公式推导
 
-​		我们的 z 通过activation function得到a，这个neuron的output是$a=\sigma(z)$，接下来这个a会乘上某一个weight $w_3$，再加上其它一大堆的value（比如bias）得到$z'$，它是下一个neuron activation function的input，然后a又会乘上另一个weight $w_4$，再加上其它一堆value得到$z''$，后面还会发生很多很多其他事情，不过这里我们就只先考虑下一步会发生什么事情：
+​		我们的 $z$ 通过activation function得到 $a$ ，这个neuron的output是$a=\sigma(z)$，接下来这个a会乘上某一个**weight** $w_3$，再加上其它一大堆的**value**（比如bias）得到$z'$，它是下一个neuron activation function的input，然后a又会乘上另一个weight $w_4$，再加上其它一堆value得到$z''$，后面还会发生很多很多其他事情，不过这里我们就只先考虑下一步会发生什么事情：
 $$
 \frac{\partial l}{\partial z}=\frac{\partial a}{\partial z} \frac{\partial l}{\partial a}
 $$
-​		这里的$\frac{\partial a}{\partial z}$实际上就是**activation function的微分**(在这里就是sigmoid function的微分)，接下来的问题是$\frac{\partial l}{\partial a}$应该长什么样子呢？a会影响$z'$和$z''$，而$z'$和$z''$会影响 l ，所以通过chain rule可以得到
+​		这里的$\frac{\partial a}{\partial z}$实际上就是**activation function的微分**(在这里就是sigmoid function的微分，说实话我不是很理解)，接下来的问题是$\frac{\partial l}{\partial a}$应该长什么样子呢？
+
+​		a会影响$z'$和$z''$，而$z'$和$z''$会影响 l ，所以通过chain rule可以得到
 $$
 \frac{\partial l}{\partial a}=\frac{\partial z'}{\partial a} \frac{\partial l}{\partial z'}+\frac{\partial z''}{\partial a} \frac{\partial l}{\partial z''}
 $$
@@ -67,25 +73,31 @@ $$
 $$
 \frac{\partial l}{\partial z}=\frac{\partial a}{\partial z} \frac{\partial l}{\partial a}=\sigma'(z)[w_3 \frac{\partial l}{\partial z'}+w_4 \frac{\partial l}{\partial z''}]
 $$
-[![img](E:/Development/Typora/images/backward-pass.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/backward-pass.png)
+>   通过这个式子我们已经可以看出前一层（$\partial z$）和后一层（$\partial z'$和（$\partial z''$））之间有联系了。
+
+
+
+![img](E:/Development/Typora/images/backward-pass.png)
+
+[](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/backward-pass.png)
 
 #### 4.2另一个观点
 
 ​		这个式子还是蛮简单的，然后，我们可以从另外一个观点来看待这个式子
 
-​		你可以想象说，现在有另外一个neuron，它不在我们原来的network里面，在下图中它被画成三角形，这个neuron的input就是$\frac{\partial l}{\partial z'}$和$\frac{\partial l}{\partial z''}$，那input $\frac{\partial l}{\partial z'}$就乘上$w_3$，input $\frac{\partial l}{\partial z''}$就乘上$w_4$，它们两个相加再乘上activation function的微分 $\sigma'(z)$，就可以得到output $\frac{\partial l}{\partial z}$
+​		你可以想象说，现在有另外一个neuron，它不在我们原来的network里面，在下图中它被画成三角形（隐含的神经元），这个neuron的input就是$\frac{\partial l}{\partial z'}$和$\frac{\partial l}{\partial z''}$，那input $\frac{\partial l}{\partial z'}$就乘上$w_3$，input $\frac{\partial l}{\partial z''}$就乘上$w_4$，它们两个相加再乘上activation function的微分 $\sigma'(z)$，就可以得到output $\frac{\partial l}{\partial z}$
 
 [![img](E:/Development/Typora/images/backward-neuron.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/backward-neuron.png)		这张图描述了一个新的“neuron”，它的含义跟图下方的表达式是一模一样的，作这张图的目的是为了方便理解
 
-​		值得注意的是，这里的$\sigma'(z)$是一个**constant**常数，它并不是一个function**，因为z其实在计算forward pass的时候就已经被决定好了，z是一个固定的值**
+​		值得注意的是，这里的$\sigma'(z)$是一个**constant**`常数`，它并不是一个function**，因为z其实在计算forward pass的时候就已经被决定好了，z是一个固定的值**
 
-​		所以这个neuron其实跟我们之前看到的sigmoid function是不一样的，它并不是把input通过一个non-linear进行转换，而是直接把input乘上一个**constant** $\sigma'(z)$，就得到了output，因此这个neuron被画成三角形，代表它跟我们之前看到的圆形的neuron的运作方式是不一样的，它是直接乘上一个constant(这里的三角形有点像电路里的运算放大器op-amp，它也是乘上一个constant)
+​		所以这个neuron其实跟我们之前看到的**sigmoid function**是不一样的，它并不是把input通过一个non-linear进行转换，而是直接把input乘上一个**constant** $\sigma'(z)$，就得到了output，因此这个neuron被画成三角形，代表它跟我们之前看到的圆形的neuron的运作方式是不一样的，它是直接乘上一个**constant**(这里的三角形有点像电路里的运算放大器op-amp，它也是乘上一个constant)
 
 #### 4.3两种情况
 
 ​		ok，现在我们最后需要解决的问题是，怎么计算$\frac{\partial l}{\partial z'}$和$\frac{\partial l}{\partial z''}$这两项，假设有两个不同的case：
 
-##### case 1：Output Layer
+##### case 1：Output Layer（输出层）
 
 ​		假设蓝色的这个neuron已经是hidden layer的最后一层了，也就是说连接在$z'$和$z''$后的这两个红色的neuron已经是output layer，它的output就已经是整个network的output了，这个时候计算就比较简单
 $$
@@ -125,7 +137,7 @@ $$
 
 [![img](E:/Development/Typora/images/bp-op-amp.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/bp-op-amp.png)
 
-​		这里每一个op-amp的放大系数就是$\sigma'(z_1)$、$\sigma'(z_2)$、$\sigma'(z_3)$、$\sigma'(z_4)$，所以整一个流程就是，先快速地计算出$\frac{\partial l}{\partial z_5}$和$\frac{\partial l}{\partial z_6}$，然后再把这两个偏微分的值乘上路径上的weight汇集到neuron上面，再通过op-amp的放大，就可以得到$\frac{\partial l}{\partial z_3}$和$\frac{\partial l}{\partial z_4}$这两个偏微分的值，再让它们乘上一些weight，并且通过一个op-amp，就得到$\frac{\partial l}{\partial z_1}$和$\frac{\partial l}{\partial z_2}$这两个偏微分的值，这样就计算完了，这个步骤，就叫做**Backward pass**
+​		这里每一个op-amp的放大系数就是$\sigma'(z_1)$、$\sigma'(z_2)$、$\sigma'(z_3)$、$\sigma'(z_4)$，所以整一个流程就是，先快速地计算出$\frac{\partial l}{\partial z_5}$和$\frac{\partial l}{\partial z_6}$（使用第一种情况），然后再把这两个偏微分的值乘上路径上的weight汇集到neuron上面，再通过op-amp的放大，就可以得到$\frac{\partial l}{\partial z_3}$和$\frac{\partial l}{\partial z_4}$这两个偏微分的值，再让它们乘上一些weight，并且通过一个op-amp，就得到$\frac{\partial l}{\partial z_1}$和$\frac{\partial l}{\partial z_2}$这两个偏微分的值，这样就计算完了，这个步骤，就叫做**Backward pass**
 
 ​		在做**Backward pass**的时候，==实际上的做法就是建另外一个neural network，本来正向neural network里面的activation function都是sigmoid function==，而现在计算Backward pass的时候，就是建一个反向的neural network，它的activation function就是一个**运算放大器op-amp**，每一个反向neuron的input是`loss l`对**后面一层layer的z**的偏微分$\frac{\partial l}{\partial z}$，output则是loss $l$对这个neuron的$z$的偏微分$\frac{\partial l}{\partial z}$，做Backward pass就是通过这样一个反向neural network的运算，把loss l对每一个neuron的z的偏微分$\frac{\partial l}{\partial z}$都给算出来
 
@@ -135,11 +147,11 @@ $$
 
 ​		最后，我们来总结一下**Backpropagation**是怎么做的：
 
-**Forward pass**，每个neuron的activation function的output，就是它所连接的weight的$\frac{\partial z}{\partial w}$
+**Forward pass**，==每个neuron的activation function的output==，就是它所连接的weight的$\frac{\partial z}{\partial w}$
 
-**Backward pass**，建一个与原来方向相反的neural network，它的三角形neuron的output就是$\frac{\partial l}{\partial z}$
+**Backward pass**，==建一个与原来方向相反的neural network，它的三角形neuron的output就是$\frac{\partial l}{\partial z}$==
 
-把通过forward pass得到的$\frac{\partial z}{\partial w}$和通过backward pass得到的$\frac{\partial l}{\partial z}$乘起来就可以得到ll对ww的偏微分$\frac{\partial l}{\partial w}$
+​		把通过forward pass得到的$\frac{\partial z}{\partial w}$和通过backward pass得到的$\frac{\partial l}{\partial z}$乘起来就可以得到**l**对**w**的偏微分$\frac{\partial l}{\partial w}$
 $$
 \frac{\partial l}{\partial w} = \frac{\partial z}{\partial w}|_{forward\ pass} \cdot \frac{\partial l}{\partial z}|_{backward \ pass}
 $$

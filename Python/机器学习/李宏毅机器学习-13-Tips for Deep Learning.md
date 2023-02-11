@@ -560,7 +560,9 @@ Dropout是怎么做的呢？
 
 ​		在training的时候，会丢掉一些neuron，就好像是你要练轻功的时候，会在脚上绑一些重物；然后，你在实际战斗的时候，就是实际testing的时候，是没有dropout的，就相当于把重物拿下来，所以你就会变得很强
 
-[![img](E:/Development/Typora/images/dropout4.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/dropout4.png)		另一个直觉的理由是这样，**neural network**里面的每一个**neuron**就是一个学生，那大家被连接在一起就是大家听到说要组队做**final project**，那在一个团队里总是有人会拖后腿，就是他会**dropout**，所以假设你觉得自己的队友会dropout，这个时候你就会想要好好做，然后去carry这个队友，这就是training的过程
+[![img](E:/Development/Typora/images/dropout4.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/dropout4.png)		
+
+​		另一个直觉的理由是这样，**neural network**里面的每一个**neuron**就是一个学生，那大家被连接在一起就是大家听到说要组队做**final project**，那在一个团队里总是有人会拖后腿，就是他会**dropout**，所以假设你觉得自己的队友会dropout，这个时候你就会想要好好做，然后去carry这个队友，这就是training的过程
 
 ​		那实际在testing的时候，其实大家都有好好做，没有人需要被carry，由于每个人都比一般情况下更努力，所以得到的结果会是更好的，这也就是testing的时候不做dropout的原因
 

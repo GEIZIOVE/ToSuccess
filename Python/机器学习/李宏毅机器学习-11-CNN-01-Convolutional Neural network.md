@@ -4,11 +4,11 @@
 
 ## Convolutional Neural network(part 1)
 
->   CNN常常被用在影像处理上，它的theory base就是三个property，和两个架构
+>   0.2                                                CNN常常被用在影像处理上，它的theory base就是三个property，和两个架构
 >   convolution 架构：针对property 1和property 2
 >   max pooling架构：针对property 3
 
-### 1.Why CNN for Image？
+### 1.为什么CNN用于图像处理
 
 #### 1.1CNN V.s. DNN
 
@@ -24,17 +24,17 @@
 
 ​		那现在的问题是这样子：**当我们直接用一般的fully connected的feedforward network来做图像处理的时候，往往会需要太多的参数**
 
-​		举例来说，假设这是一张100\*100的彩色图片，它的分辨率才100\*100，那这已经是很小张的image了，然后你需要把它拉成一个vector，总共有100\*100 3个pixel(如果是彩色的图的话，每个pixel其实需要**3个value**，即RGB值来描述它的)，把这些加起来input vectot就已经有三万维了；如果input vector是三万维，又假设hidden layer有1000个neuron，那仅仅是第一层hidden layer的参数就已经有30000*1000个了，这样就太多了
+​		举例来说，假设这是一张100\*100的彩色图片，它的分辨率才100\*100，那这已经是很小张的image了，然后你需要把它拉成一个vector，总共有100\*100 * 3个pixel(如果是彩色的图的话，每个pixel其实需要**3个value**，即RGB值来描述它的)，把这些加起来input vectot就已经有三万维了；如果input vector是三万维，又假设hidden layer有1000个neuron，那仅仅是第一层hidden layer的参数就已经有30000*1000个了，这样就太多了
 
-​		所以，**CNN做的事情其实是，来简化这个neural network的架构，我们根据自己的知识和对图像处理的理解，一开始就把某些实际上用不到的参数给过滤掉**，我们一开始就想一些办法，不要用fully connected network，而是用比较少的参数，来做图像处理这件事情，所以CNN其实是比一般的DNN还要更简单的。
+​		所以，**CNN做的事情其实是，来简化这个neural network的架构，我们根据自己的知识和对图像处理的理解，一开始就把某些实际上用不到的参数给过滤掉**，我们一开始就想一些办法，不要用**fully connected network**，而是用比较少的参数，来做图像处理这件事情，所以CNN其实是比一般的DNN还要更简单的。
 
 ​		虽然CNN看起来，它的运作比较复杂，但事实上，它的模型比DNN还要更简单，我们就是用prior knowledge（**先验知识**），去把原来fully connected的layer里面的一些参数拿掉，就变成CNN
 
-#### 1.2Three Property for CNN theory base
+#### 1.2CNN理论基础的三个属性
 
 ​		为什么我们有可能把一些参数拿掉？为什么我们有可能只用比较少的参数就可以来做图像处理这件事情？下面列出三个对影像处理的观察：(**这也是CNN架构提出的基础所在！！！**)
 
-##### 1.2.1Some patterns are much smaller than the whole image
+##### 1.2.1Property1： 有些图案比整个图像小得多
 
 ​		在影像处理里面，如果在network的第一层hidden layer里，那些neuron要做的事情是侦测有没有一种东西、一种pattern(图案样式)出现，那大部分的pattern其实是比整张image要小的，所以对一个neuron来说，想要侦测有没有某一个pattern出现，它其实并不需要看整张image，只需要看这张image的一小部分，就可以决定这件事情了
 
@@ -42,7 +42,7 @@
 
 ​		举例来说，假设现在我们有一张鸟的图片，那第一层hidden layer的**某一个**neuron的工作是，检测有没有鸟嘴的存在(你可能还有一些neuron侦测有没有鸟嘴的存在、有一些neuron侦测有没有爪子的存在、有一些neuron侦测有没有翅膀的存在、有没有尾巴的存在，之后合起来，就可以侦测，图片中有没有一只鸟)，那它其实并不需要看整张图，因为，其实我们只要给neuron看这个小的红色杠杠里面的区域，它其实就可以知道说，这是不是一个鸟嘴，对人来说也是一样，只要看这个小的区域你就会知道说这是鸟嘴，所以，**每一个neuron其实只要连接到一个小块的区域就好，它不需要连接到整张完整的图，因此也对应着更少的参数**
 
-##### 1.2.2The same patterns appear in different regions
+##### 1.2.2Property2：相同的图案出现在不同的区域
 
 ​		同样的pattern，可能会出现在image的不同部分，但是它们有同样的形状、代表的是同样的含义，因此它们也可以用同样的neuron、同样的参数，被同一个detector检测出来
 
@@ -50,7 +50,7 @@
 
 ​		举例来说，上图中分别有一个处于左上角的鸟嘴和一个处于中央的鸟嘴，但你并不需要训练两个不同的detector去专门侦测左上角有没有鸟嘴和中央有没有鸟嘴这两件事情，这样做太冗余了，我们要cost down(降低成本)，我们并不需要有两个neuron、两组不同的参数来做duplicate(重复一样)的事情，所以**我们可以要求这些功能几乎一致的neuron共用一组参数，它们share同一组参数就可以帮助减少总参数的量**
 
-##### 1.2.3Subsampling the pixels will not change the object
+##### 1.2.3Property3：对像素进行Subsampling 不会改变对象
 
 ​		我们可以对一张image做subsampling(二次抽样)，假如你把它奇数行、偶数列的pixel拿掉，image就可以变成原来的十分之一大小，而且并不会影响人对这张image的理解，对你来说，下面两张大小不一的image看起来不会有什么太大的区别，你都可以识别里面有什么物件，因此subsampling对图像辨识来说，可能是没有太大的影响的
 
@@ -58,7 +58,7 @@
 
 所以，**我们可以利用subsampling这个概念把image变小，从而减少需要用到的参数量**
 
-### 2.The whole CNN structure
+### 2.整个CNN的架构
 
 整个CNN的架构是这样的：
 
@@ -78,13 +78,13 @@
 
 [![img](E:/Development/Typora/images/property.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/property.png)
 
-### 3.Convolution
+### 3.Convolution——卷积
 
 ​		假设现在我们network的input是一张6*6的image，图像是黑白的，因此每个pixel只需要用一个value来表示，而在convolution layer里面，有一堆Filter，**这边的每一个Filter，其实就等同于是Fully connected layer里的一个neuron**
 
 #### Property 1
 
-[![img](E:/Development/Typora/images/filter.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/filter.png)		每一个Filter**其实就是一个matrix**，这个matrix里面每一个element的值，就跟那些neuron的weight和bias一样，是network的parameter，**它们具体的值都是通过Training data学出来的**，而不是人去设计的
+[![img](E:/Development/Typora/images/filter.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/filter.png)		每一个Filter**其实就是一个matrix**，这个matrix里面每一个element的值，就跟那些**neuron**的**weight**和**bias**一样，是network的parameter，==**它们具体的值都是通过Training data学出来的**==，而不是人去设计的
 
 ​		所以，每个Filter里面的值是什么，要做什么事情，都是自动学习出来的，上图中每一个filter是3 * 3的size，意味着它就是在侦测一个3 * 3的**pattern**，**当它侦测的时候，并不会去看整张image，它只看一个3\*3范围内的pixel，就可以判断某一个pattern有没有出现，这就考虑了property 1**
 
@@ -102,7 +102,7 @@
 
 [![img](E:/Development/Typora/images/filter2.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/filter2.png)
 
-​		CNN对**不同scale的相同pattern的处理**上存在一定的困难，由于现在每一个filter size都是一样的，这意味着，如果你今天有同一个pattern，它有不同的size，有大的鸟嘴，也有小的鸟嘴，CNN并不能够自动处理这个问题；		
+​		CNN对**不同scale的相同pattern的处理**上存在一定的困难，由于现在每一个filter size都是一样的，==这意味着，如果你今天有同一个pattern，它有不同的size，有大的鸟嘴，也有小的鸟嘴，CNN并不能够自动处理这个问题；==		
 
 ​		DeepMind曾经发过一篇paper，上面提到了当你input一张image的时候，它在CNN前面，再接另外一个network，这个network做的事情是，它会output一些scalar（ 标量），告诉你说，它要把这个image的里面的哪些位置做旋转、缩放，然后，再丢到CNN里面，这样你其实会得到比较好的performance
 
@@ -148,7 +148,7 @@
 
 #### 5.4总结
 
-​		因此我们可以这样想，有这样一些特殊的neuron，它们只连接着9条带weight的线(9=3*3对应着filter的元素个数，这些weight也就是filter内部的元素值，上图中圆圈的颜色与连线的颜色一一对应)
+​		因此我们可以这样想：有这样一些特殊的neuron，它们只连接着9条带weight的线(9=3*3对应着filter的元素个数，这些weight也就是filter内部的元素值，上图中圆圈的颜色与连线的颜色一一对应)
 
 ​		当filter在image matrix上移动做convolution的时候，**每次移动做的事情实际上是去检测这个地方有没有某一种pattern**，对于Fully connected layer来说，它是对整张image做detection的，因此每次去检测image上不同地方有没有pattern其实是不同的事情，所以这些neuron都必须连接到整张image的所有pixel上，并且不同neuron的连线上的weight都是相互独立的
 
@@ -162,41 +162,49 @@
 
 ​		首先，第一件事情就是这都是用**toolkit**做的，所以你大概不会自己去写；如果你要自己写的话，它其实就是跟原来的Backpropagation用一模一样的做法，只是有一些weight就永远是0，你就不去train它，它就永远是0
 
-​		然后，怎么让某些neuron的weight值永远都是一样呢？你就用一般的Backpropagation的方法，对每个weight都去算出gradient，再把本来要tight在一起、要share weight的那些weight的gradient平均，然后，让他们update同样值就ok了(???????)
+​		然后，怎么让某些neuron的weight值永远都是一样呢？==你就用一般的Backpropagation的方法，对每个weight都去算出gradient，再把本来要tight在一起、要share weight的那些weight的gradient平均，然后，让他们update同样值就ok了(???????)==
 
-### 6.Max Pooling
+### 6.Max Pooling——池化层
 
 #### 6.1Operation of max pooling
 
 ​		相较于convolution，max pooling是比较简单的，它就是做**subsampling**，根据filter 1，我们得到一个4 * 4的matrix，根据filter 2，你得到另外一个4 * 4的matrix，接下来，我们要做什么事呢？
 
-​		我们把output四个分为一组，**每一组里面通过选取平均值或最大值的方式**，把原来4个value合成一个 value，==这件事情相当于在image每相邻的四块区域内都挑出一块来检测==，这种subsampling的方式就可以让你的image缩小！
+​		我们把output**四个分为一组**，**每一组里面通过选取平均值或最大值的方式**，把原来4个value合成一个 value，==这件事情相当于在image每相邻的四块区域内都挑出一块来检测==，这种subsampling的方式就可以让你的image缩小！
 
 [![img](E:/Development/Typora/images/max-pooling.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/max-pooling.png)		讲到这里你可能会有一个问题，如果取Maximum放到network里面，不就没法微分了吗？max这个东西，感觉是没有办法对它微分的啊，其实是可以的，后面的章节会讲到Maxout network，会告诉你怎么用微分的方式来处理它
+
+Q：在深度学习CNN的池化层中，为什么Maximum无法微分
+
+A：在 CNN 中使用最大池化层的一个常见原因是，它能够在保留图像的空间结构的同时，对图像的尺寸进行减小。最大池化层通过在输入的特征图上的每个窗口内取最大值，来实现这一目的。
+
+​		然而，最大池化层存在一个潜在的问题，即它不能微分。这是因为，在反向传播过程中，我们需要使用链式法则来计算梯度。但是，在最大池化层中，每个输出都是来自一个包含多个输入的窗口内的最大值，因此我们无法确定具体哪个输入对应的值对应了输出。这就意味着我们无法通过链式法则来计算每个输入对应的梯度。
+
+​		因此，为了解决这个问题，一种常见的做法是使用平均池化层，因为平均池化层是可微的。但是，最大池化层也有一些优点，例如能够更好地捕获图像中的明显特征，因此在某些情况下仍然可以使用。
 
 #### 6.2Convolution + Max Pooling
 
 所以，结论是这样的：
 
-​		做完一次convolution加一次max pooling，我们就把原来6  * 6的image，变成了一个2 * 2的image；至于这个2*2的image，**它每一个pixel的深度，也就是每一个pixel用几个value来表示，就取决于你有几个filter**，如果你有50个filter，就是50维，像下图中是两个filter，对应的深度就是两维
+​		做完一次convolution加一次max pooling，我们就把原来6  * 6的image，变成了一个2 * 2的image；至于这个2*2的image**它每一个pixel的深度，也就是每一个pixel用几个value来表示，就取决于你有几个filter**，如果你有50个filter，就是50维，像下图中是两个filter，对应的深度就是两维
 
-​		所以，这是一个新的比较小的image，它表示的是不同区域上提取到的特征，==**实际上不同的filter检测的是该image同一区域上的不同特征属性**==，所以每一层 channel (通道) 代表的是一种属性，一块区域有几种不同的属性，就有几层不同的channel，对应的就会有几个不同的filter对其进行convolution操作
+​		所以，这是一个新的比较小的image，它表示的是不同区域上提取到的特征，==**实际上不同的filter检测的是该image同一区域上的不同特征属性**==，所以**每一层 channel (通道) 代表的是一种属性**，一块区域有几种不同的属性，就有几层不同的channel，对应的就会有几个不同的filter对其进行convolution操作
 
 [![img](E:/Development/Typora/images/max-pool.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/max-pool.png)		这件事情可以repeat很多次，你可以把得到的这个比较小的image，再次进行convolution和max pooling的操作，得到一个更小的image，依次类推
 
-​		有这样一个问题：假设我第一个convolution有25个filter，通过这些filter得到25个feature map，然后repeat的时候第二个convolution也有25个filter，那这样做完，我是不是会得到25^2个feature map？
+​		有这样一个问题：假设我第一个convolution有25个filter，通过这些filter得到25个feature map，然后repeat的时候第二个convolution也有25个filter，那这样做完，我是不是会得到$25^2$个feature map？
 
-​		其实不是这样的，你这边做完一次convolution，得到25个feature map之后再做一次convolution，还是会得到25个feature map，因为convolution在考虑input的时候，是会考虑深度的，它并不是每一个channel分开考虑，而是一次考虑所有的channel，所以，你convolution这边有多少个filter，再次output的时候就会有多少个channel
+​		其实不是这样的，你这边做完一次convolution，得到25个feature map之后再做一次convolution，还是会得到25个feature map，==因为convolution在考虑input的时候，是会考虑深度的，它并不是每一个channel分开考虑，而是一次考虑所有的channel，所以，你convolution这边有多少个filter，再次output的时候就会有多少个channel==
 
 ​		因此你这边有25个channel，经过含有25个filter的convolution之后output还会是25个channel，只是这边的每一个channel，它都是一个cubic(立方体)，它的高有25个value那么高
 
 [![img](E:/Development/Typora/images/channel.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/channel.png)
 
-### 7.Flatten
+### 7.Flatten——扁平化
 
 ​		做完convolution和max pooling之后，就是FLatten和Fully connected Feedforward network的部分
 
-​		Flatten的意思是，把左边的feature map拉直，然后把它丢进一个Fully connected Feedforward network，然后就结束了，也就是说，我们之前通过CNN提取出了image的feature，它相较于原先一整个image的vetor，少了很大一部分内容，因此需要的参数也大幅度地减少了，但最终，也还是要丢到一个Fully connected的network中去做最后的分类工作
+​		Flatten的意思是，把左边的**feature map**拉直，然后把它丢进一个**Fully connected Feedforward network**，然后就结束了，也就是说，我们之前通过CNN提取出了image的feature，它相较于原先一整个image的vetor，少了很大一部分内容，因此需要的参数也大幅度地减少了，但最终，也还是要丢到一个Fully connected的network中去做最后的分类工作
 
 [![img](E:/Development/Typora/images/fatten.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/fatten.png)
 
@@ -204,9 +212,9 @@
 
 #### 8.1内容简介
 
-​		接下来就讲一下，如何用Keras来implement CNN，实际上在compile、training和fitting的部分，内容跟DNN是一模一样的，对CNN来说，唯一需要改变的是**network structure**，以及input的**format**
+​		接下来就讲一下，如何用Keras来实现CNN，实际上在compile、training和fitting的部分，内容跟DNN是一模一样的，对CNN来说，唯一需要改变的是**network structure**，以及input的**format**
 
-​		本来在DNN里，input是一个由image拉直展开而成的vector，但现在如果是CNN的话，它是会考虑input image的几何空间的，所以不能直接input一个vector，而是要input一个`tensor`给它(**tensor就是高维的vector**)，这里你要给它一个三维的vector，一个image的长宽各是一维，如果它是彩色的话，RGB就是第三维，所以你要assign一个三维的matrix，这个高维的matrix就叫做tensor
+​		本来在DNN里，input是一个由image拉直展开而成的vector，但现在如果是CNN的话，它是会考虑input image的几何空间的，所以不能直接input一个vector，而是要input一个`tensor`给它(**tensor就是高维的vector**)，这里你要给它一个三维的vector，一个image的长宽各是一维，如果它是彩色的话，RGB就是第三维，所以你要assign一个三维的matrix，这个高维的matrix就叫做**tensor**
 
 [![img](E:/Development/Typora/images/cnn-keras1.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/cnn-keras1.png)那怎么implement一个convolution的layer呢？
 
@@ -214,7 +222,10 @@
 model2.add( Convolution2D(25,3,3, input_shape=(28,28,1)) )
 ```
 
-​		还是用`model.add`增加CNN的layer，将原先的Dense改成`Convolution2D`，参数 25 代表你有25个filter，参数3,3代表你的`filter`都是3 * 3的matrix，此外你还需要告诉model，你input的image的shape是什么样子的，假设我现在要做手写数字识别，input就是28*28的image，又因为它的每一个pixel都只有单一颜色，因此`input_shape`的值就是(28,28,1)，**如果是RGB的话，1就要改成3**
+-   还是用`model.add`增加CNN的layer，将原先的Dense改成`Convolution2D`
+-   参数 25 代表你有25个filter，参数3,3代表你的`filter`都是3 * 3的matrix，
+-   此外你还需要告诉model，你input的image的shape是什么样子的，假设我现在要做手写数字识别，input就是28*28的image，
+-   又因为它的每一个pixel都只有单一颜色，因此`input_shape`的值就是(28,28,1)，**如果是RGB的话，1就要改成3**
 
 ​		然后增加一层Max Pooling的layer
 
@@ -240,9 +251,9 @@ model2.add( MaxPooling2D(2,2) )
 
 #### 一个重要的问题
 
-​		看到这里，你可能会有一个疑惑，第二次convolution的input是25 * 13 * 13的cubic，用50个3 * 3的filter卷积后，得到的输出时应该是50个cubic，且每个cubic的尺寸为25*11*11，那么max pooling把长宽各砍掉一半后就是50层25*5*5的cubic，那flatten后不应该就是50*25*5*5吗？
+​		看到这里，你可能会有一个疑惑，第二次convolution的input是$25 * 13 * 13$的cubic，用50个3 * 3的filter卷积后，得到的输出时应该是50个cubic，且每个cubic的尺寸为25 * 11 * 11，那么max pooling把长宽各砍掉一半后就是50层$25 * 5 * 5$的cubic，那flatten后不应该就是$50 * 25 * 5 * 5$吗？
 
-​		其实不是这样的，在第二次做convolution的时候，我们是用25*3*3的cubic filter对25*13*13的cubic input进行卷积操作的，filter的每一层和input cubic中对应的每一层(也就是每一个channel)，`它们进行内积后，还要把cubic的25个channel的内积值进行求和`，作为这个“neuron”的output，它是一个scalar，这个cubic filter对整个cubic input做完一遍卷积操作后，得到的是一层scalar，然后有50个cubic filter，对应着50层scalar，因此最终得到的output是一个50*11*11的cubic！
+​		其实不是这样的，在第二次做convolution的时候，我们是用$25*3*3$的cubic filter对$25*13*13$的cubic input进行卷积操作的，filter的每一层和input cubic中对应的每一层(也就是每一个channel)，`它们进行内积后，还要把cubic的25个channel的内积值进行求和`，作为这个“neuron”的output，它是一个scalar，这个cubic filter对整个cubic input做完一遍卷积操作后，**得到的是一层scalar**，然后有50个cubic filter，对应着50层scalar，因此最终得到的output是一个$50*11*11$的cubic！
 
 ​		**这里的关键是filter和image都是cubic**，`每个cubic filter有25层高`，它和同样有25层高的cubic image做卷积，并不是单单把每个cubic对应的channel进行内积，`还会把这些内积求和！！！最终变为1层`，因此==**两个矩阵或者tensor做了卷积后，不管之前的维数如何，都会变为一个scalor！**==，故如果有50个Filter，无论input是什么样子的，最终的output还会是50层
 
@@ -252,7 +263,7 @@ model2.add( MaxPooling2D(2,2) )
 
 #### code
 
-```
+```python
 import numpy as np
 from keras.models import Sequential
 from keras.layers import Convolution2D, MaxPooling2D, Flatten, Conv2D

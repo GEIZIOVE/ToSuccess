@@ -12,7 +12,7 @@
 
 ```powershell
 cat /proc/sys/vm/max_map_count
-1
+65530
 ```
 
 重新设置max_map_count的值

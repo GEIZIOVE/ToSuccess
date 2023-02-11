@@ -29,19 +29,20 @@
 
 [![img](E:/Development/Typora/images/rnn.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn.png)
 
-​		注意到，每次**NN**的输出都要考虑memory中存储的临时值，而不同的输入产生的临时值也尽不相同，因此改变输入序列的顺序会导致最终输出结果的改变(**Changing the sequence order will change the output**)
+​		注意到，每次**NN**的输出都要考虑memory中存储的临时值，而不同的输入产生的临时值也尽不相同，因此改变输入序列的顺序会导致最终输出结果的改变
 
 #### 1.2Slot Filling with RNN
 
 用**RNN**处理Slot Filling的流程举例如下：
 
 -   “arrive”的**vector**作为$x^1$输入RNN，通过hidden layer生成$a^1$，再根据$a^1$生成$y^1$，表示“arrive”属于每个slot的概率，其中$a^1$会被存储到memory中
--   “Taipei”的vector作为$x^2$输入RNN，此时hidden layer同时考虑$x^2$和存放在memory中的$a^1$，生成$a^2$，再根据$a^2$生成$y^2$，表示“Taipei”属于某个slot的概率，此时再把$a^2$存到memory中
+-   “Taipei”的vector作为$x^2$输入RNN，此时hidden layer**同时考虑$x^2$和存放在memory中的$a^1$**，生成$a^2$，再根据$a^2$生成$y^2$，表示“Taipei”属于某个slot的概率，此时再把$a^2$存到memory中
 -   依次类推
 
 [![img](E:/Development/Typora/images/rnn-example2.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn-example2.png)
 
-​		注意：上图为同一个RNN在三个不同时间点被分别使用了三次，并非是三个不同的NN
+>   ​		注意：上图为同一个RNN在三个不同时间点被分别使用了三次，并非是三个不同的NN
+>
 
 ​		这个时候，即使输入同样是“Taipei”，我们依旧可以根据前文的“leave”或“arrive”来得到不一样的输出
 
@@ -68,13 +69,14 @@ RNN有不同的变形：
 
 ### 2.LSTM
 
-​		前文提到的RNN只是最简单的版本，并没有对memory的管理多加约束，可以随时进行读取，而现在常用的memory管理方式叫做**长短期记忆**(`Long Short-term Memory`)，简称LSTM
+​		前文提到的RNN只是最简单的版本，并没有对memory的管理多加约束，**可以随时进行读取**，而现在常用的memory管理方式叫做**长短期记忆**(`Long Short-term Memory`)，简称LSTM
 
-冷知识：可以被理解为**比较长的短期记忆**，因此是short-term，而非是long-short term
+>   冷知识：可以被理解为**比较长的短期记忆**，因此是short-term，而非是long-short term
+>
 
 #### 2.1Three-gate
 
-LSTM有三个gate：
+LSTM有三个**gate**：
 
 -   当某个neuron的输出想要被写进memory cell，它就必须要先经过一道叫做**<font color='red'>input gate</font>**的闸门，如果input gate关闭，则任何内容都无法被写入，<u>而关闭与否、什么时候关闭，都是由神经网络自己学习到的</u>
 -   <font color='red'>output gate</font>决定了外界是否可以从memory cell中读取值，当**output gate**关闭的时候，memory里面的内容同样无法被读取
@@ -92,9 +94,9 @@ LSTM有三个gate：
 如果从表达式的角度看LSTM，它比较像下图中的样子
 
 -   $z$是想要被存到cell里的输入值
--   $z_i$是操控input gate的信号
--   $z_o$是操控output gate的信号
--   $z_f$是操控forget gate的信号
+-   $z_i$是操控**input gate**的信号
+-   $z_o$是操控**output gate**的信号
+-   $z_f$是操控**forget gate**的信号
 -   $a$是综合上述4个input得到的output值
 
 [![img](E:/Development/Typora/images/lstm2.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/lstm2.png)
@@ -141,7 +143,7 @@ LSTM有三个gate：
 
 ​		从上图中你可能看不出LSTM与RNN有什么关系，接下来我们用另外的图来表示它
 
-​		假设我们现在有一整排的LSTM作为neuron，**每个LSTM的cell里都存了一个scalar值**，把所有的scalar连接起来就组成了一个vector $c^{t-1}$
+​		假设我们现在有**一整排的**LSTM作为neuron，**每个LSTM的cell里都存了一个scalar值**，把所有的scalar连接起来就组成了一个vector $c^{t-1}$
 
 ​		在时间点$t$，输入了一个vector $x^t$，<u>它会乘上一个matrix</u>，通过转换得到$z$，而$z$的每个dimension就代表了操控每个LSTM的输入值，同理经过不同的转换得到$z^i$、$z^f$和$z^o$，得到操控每个LSTM的门信号
 

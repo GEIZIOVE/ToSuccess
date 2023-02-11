@@ -2,20 +2,20 @@
 
 >   主要介绍深度学习的相关基础理论。
 
-### 1.Ups and downs of Deep Learning
+### 1.深度学习的起起落落
 
 -   1958：Perceptron(linear model)，**感知机**的提出
     -   和Logistic Regression类似，只是少了sigmoid的部分
 -   1969：Perceptron has limitation，from MIT
 -   1980s：Multi-layer Perceptron，多层感知机
     -   和今天的DNN很像
--   1986：Backpropagation，反向传播
+    -   1986：Backpropagation，反向传播
     -   Hinton propose的Backpropagation
     -   存在problem：通常超过3个layer的neural network，就train不出好的结果
 -   1989: 1 hidden layer is “good enough”，why deep？
-    -   有人提出一个理论：只要neural network有一个hidden layer，它就可以model出任何的function，所以根本没有必要叠加很多个hidden layer，所以Multi-layer Perceptron的方法又坏掉了，这段时间Multi-layer Perceptron这个东西是受到抵制的
+    -   有人提出一个理论：只要neural network有一个hidden layer，它就可以模拟出任何的function，所以根本没有必要叠加很多个hidden layer，所以Multi-layer Perceptron的方法又坏掉了，这段时间Multi-layer Perceptron这个东西是受到抵制的
 -   2006：RBM initialization(breakthrough)：Restricted Boltzmann Machine，受限玻尔兹曼机
-    -   Deep learning -> another Multi-layer Perceptron ？在当时看来，它们的不同之处在于在做gradient descent的时候选取初始值的方法如果是用RBM，那就是Deep learning；如果没有用RBM，就是传统的Multi-layer Perceptron
+    -   Deep learning -> another Multi-layer Perceptron ？在当时看来，它们的**不同之处在于在做gradient descent的时候选取初始值的方法如果是用RBM**，那就是Deep learning；如果没有用RBM，就是传统的Multi-layer Perceptron
     -   那实际上呢，RBM用的不是neural network base的方法，而是graphical model，后来大家试验得多了发现RBM并没有什么太大的帮助，因此现在基本上没有人使用RBM做initialization了
     -   RBM最大的贡献是，它让大家重新对Deep learning这个model有了兴趣(石头汤的故事)
 -   2009：GPU加速的发现
@@ -28,36 +28,36 @@
 
 [![img](E:/Development/Typora/images/three-step-dl.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/three-step-dl.png)
 
-### 2.Neural Network
+### 2.神经网络
 
-#### 2.1concept
+#### 2.1concept(理论)
 
-​		把多个**Logistic Regression**前后connect在一起，然后把一个**Logistic Regression**称之为neuron（**神经元**），整个称之为neural network（神经网络）
+​		把多个**Logistic Regression**前后connect在一起，然后把一个**Logistic Regression**称之为`neuron`（**神经元**），整个称之为neural `network`（神经网络）
 
 [![img](E:/Development/Typora/images/neural-network.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/neural-network.png)
 
-​		我们可以用不同的方法连接这些**neuron**，就可以得到不同的**structure**，neural network里的每一个Logistic Regression都有自己的**weight**和**bias**，这些weight和bias集合起来，就是==这个network的**parameter**，我们用$\theta$来描述==
+​		我们可以用不同的方法连接这些**neuron**，就可以得到不同的**structure**，neural network里的每一个Logistic Regression都有自己的**weight**和**bias**，这些weight和bias集合起来，就是==这个network的**parameter**，我们用$\theta$来描述==。
 
-#### 2.2Fully Connect Feedforward Network
+#### 2.2Fully Connect Feedforward Network（全连接前馈网络）
 
-​		那该怎么把它们连接起来呢？这是需要你手动去设计的，最常见的连接方式叫做**Fully Connect Feedforward Network(全连接前馈网络)**
+​		那该怎么把它们连接起来呢？最常见的连接方式叫做**Fully Connect Feedforward Network(全连接前馈网络)**
 
-​		如果一个neural network的参数weight和bias已知的话，它就是一个function，它的input是一个**vector**，output是另一个**vector**，这个vector里面放的是样本点的**feature**，**vector的dimension就是feature的个数**
+​		如果一个**neural network**的参数**weight**和**bias**已知的话，它就是一个function，它的input是一个**vector**，output是另一个**vector**，这个vector里面放的是样本点的**feature**，**vector的dimension就是feature的个数**
 
 [![img](E:/Development/Typora/images/fully-connect-feedback-network.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/fully-connect-feedback-network.png)
 
-​		如果今天我们还不知道参数，只是定出了这个network的**structure**，只是决定好这些neuron该怎么连接在一起，这样的一个network structure其实是define了一个function set(model)，我们给这个network设不同的参数，它就变成了不同的function，把这些可能的function集合起来，我们就得到了一个**function set**
+​		如果今天我们还不知道参数，只是定出了这个network的**structure**，只是决定好这些neuron该怎么连接在一起，这样的一个network structure其实是define了一个**function set**(model)：==我们给这个network设不同的参数，它就变成了不同的function，把这些可能的function集合起来，我们就得到了一个**function set**==
 
 ​		只不过我们用**neural network**决定function set的时候，这个function set是比较大的，它包含了很多原来你做**Logistic Regression**、**linear Regression**所没有办法包含的function
 
 ​		下图中，每一列表示一个layer，每个layer里面的每一个球都代表一个neuron
 
--   layer和layer之间neuron是两两互相连接的，layer 1的neuron output会连接给layer 2的每一个neuron作为input
+-   layer和layer之间neuron是**两两互相连接的**，layer 1的neuron out111111111111111111111111111111111111111111111put会连接给layer 2的每一个neuron作为input
 -   对整个neural network来说，它需要一个input，**这个input就是一个feature的vector**，而对layer 1的每一个neuron来说，它的input就是input layer的每一个dimension
 -   最后那个layer L，由于它后面没有接其它东西了，所以它的output就是整个network的output
 -   这里每一个layer都是有名字的
-    -   input的地方，叫做**input layer**（输入层），输入层(严格来说input layer其实不是一个layer，它跟其他layer不一样，不是由neuron所组成的)
-    -   output的地方，叫做**output layer**，输出层
+    -   input的地方，叫做**input layer**（`输入层`），输入层(严格来说input layer其实不是一个layer，它跟其他layer不一样，不是由neuron所组成的)
+    -   output的地方，叫做**output layer**，`输出层`
     -   其余的地方，叫做**hidden layer**，`隐藏层`
 -   每一个neuron里面的sigmoid function，在**Deep Learning**中被称为**activation function**(激励函数)，事实上它不见得一定是sigmoid function，还可以是其他function(sigmoid function是从Logistic Regression迁移过来的，现在已经较少在Deep learning里使用了)
 -   **有很多层layers的neural network**，被称为**DNN(Deep Neural Network)**
@@ -74,22 +74,22 @@
 
 #### 2.3Matrix Operation（矩阵的基本运算）
 
-​		network的运作过程，我们通常会用**Matrix Operation（矩阵的基本运算）**来表示，以下图为例，假设第一层hidden layers的两个neuron，它们的weight分别是$w_1=1,w_2=-2,w_1'=-1,w_2'=1$，那就可以把它们排成一个**matrix**：$\begin{bmatrix}1 \ \ \ -2\\ -1 \ \ \ 1 \end{bmatrix}$，而我们的input又是一个**2*1**的vector：$\begin{bmatrix}1\\-1 \end{bmatrix}$，将`w和x相乘`，`再加上bias`的vector：$\begin{bmatrix}1\\0 \end{bmatrix}$，就可以得到这一层的vector z（净输入），再经过activation function得到这一层的output：(activation function可以是很多类型的function，这里还是用Logistic Regression迁移过来的sigmoid function作为运算)
+​		network的运作过程，我们通常会用**Matrix Operation（矩阵的基本运算）**来表示，以下图为例，假设第一层hidden layers的两个neuron，它们的weight分别是$w_1=1,w_2=-2,w_1'=-1,w_2'=1$，那就可以把它们排成一个**matrix**：$\begin{bmatrix}1 \ \ \ -2\\ -1 \ \ \ 1 \end{bmatrix}$，而我们的input又是一个**2*1**的vector：$\begin{bmatrix}1\\-1 \end{bmatrix}$，将`w和x相乘`，`再加上bias`的vector：$\begin{bmatrix}1\\0 \end{bmatrix}$，就可以得到这一层的vector $z$（净输入），再经过activation function得到这一层的output：(activation function可以是很多类型的function，这里还是用Logistic Regression迁移过来的sigmoid function作为运算)
 
 $$
 \sigma(\begin{bmatrix}1 \ \ \ -2\\ -1 \ \ \ 1 \end{bmatrix} \begin{bmatrix}1\\-1 \end{bmatrix}+\begin{bmatrix}1\\0 \end{bmatrix})=\sigma(\begin{bmatrix}4\\-2 \end{bmatrix})=\begin{bmatrix}0.98\\0.12 \end{bmatrix}
 $$
 [![img](E:/Development/Typora/images/matrix-operation.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/matrix-operation.png)
 
-​		这里我们把所有的变量都以matrix的形式表示出来，注意$W^i$的matrix，每一行对应的是一个neuron的weight，`行数就是neuron的个数`，而`input x，bias b和output y都是一个列向量`，行数就是feature的个数(也是neuron的个数，==neuron的本质就是把feature transform特征转换（上一章最后讲得）到另一个space==)
+​		这里我们把所有的变量都以matrix的形式表示出来，注意$W^i$的matrix，每一行对应的是一个neuron的weight，`行数就是neuron的个数`，而`input x，bias b和output y都是一个列向量`，行数就是feature的个数(也是输入层neuron的个数，==neuron的本质就是把feature transform特征转换（上一章最后讲的）到另一个space==)
 
 [![img](E:/Development/Typora/images/neural-network-compute.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/neural-network-compute.png)
 
 ​		把这件事情写成矩阵运算的好处是，可以用**GPU**加速，GPU对matrix的运算是比CPU要来的快的，所以我们写neural network的时候，习惯把它写成matrix operation，然后call GPU来加速它
 
-#### 2.4Output Layer
+#### 2.4Output Layer（输出层）
 
-​		我们可以把hidden layers这部分，看做是一个**feature extractor(特征提取器)**，这个feature extractor就replace了我们之前手动做feature engineering，feature transformation这些事情，经过这个feature extractor得到的$x_1,x_2,...,x_k$就可以被当作一组新的feature
+​		我们可以把hidden layers这部分，看做是一个**feature extractor(特征提取器)**，它就替代了我们之前手动做**feature engineering，feature transformation**这些事情，经过这个feature extractor得到的$x_1,x_2,...,x_k$就可以被当作一组新的feature
 
 ​		output layer做的事情，其实就是把它当做一个**Multi-class classifier**，它是拿经过feature extractor转换后的那一组比较好的feature(能够被很好地separate)进行分类的，由于我们把output layer看做是一个Multi-class classifier，所以我们会在最后一个layer加上**softmax**
 
@@ -97,9 +97,11 @@ $$
 
 ### 3.Example Application
 
-#### 3.1Handwriting Digit Recognition
+#### 3.1手写数字识别
 
-​		这里举一个手写数字识别的例子，input是一张image，对机器来说一张image实际上就是一个vector，假设这是一张16*16的image，那它有256个pixel（像素），对machine来说，它是一个256维的vector，image中的每一个都对应到vector中的一个dimension，简单来说，**我们把黑色的pixel的值设为1，白色的pixel的值设为0**
+​		input是一张image，对机器来说一张image实际上就是一个vector，假设这是一张16*16的image，那它有256个pixel（像素），对machine来说，它是一个256维的vector（image中的每一个像素点都对应到vector中的一个dimension）
+
+​		简单来说，**我们把黑色的pixel的值设为1，白色的pixel的值设为0**。
 
 ​		而neural network的output，如果在output layer使用了softmax，那它的output就是一个突出极大值的Probability distribution，假设我们的output是**10维**的话(10个数字，0~9)，这个output的每一维都对应到它可能是某一个数字的几率，==实际上这个neural network的作用就是计算这张image成为10个数字的几率各自有多少，几率最大(**softmax**突出极大值的意义所在)的那个数字，就是机器的预测值==
 
@@ -124,7 +126,7 @@ A--> |256 dimension|B[network structure]
 B--> |10 dimension|C(output)
 ```
 
-`input 256维，output 10维，以及自己design的network structure`  =》 `function set(model)`
+​			`input 256维,output 10维,以及自己design的network structure`  => `function set(model)`
 
 #### 3.3 Step 2：Goodness of function
 
@@ -132,8 +134,9 @@ B--> |10 dimension|C(output)
 
 [![img](E:/Development/Typora/images/loss-for-example.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/loss-for-example.png)
 
-​		input这张image的256个pixel，通过这个neural network之后，会得到一个output，称之为 `y` ；而从这张image的label中转化而来的target，称之为$\hat{y}$，有了output $y$和target $\hat{y}$之后，要做的事情是计算它们之间的**cross entropy**(交叉熵)，这个做法跟我们之前做Multi-class classification的时候是一模一样的
+​			输入这张image的256个pixel，通过这个neural network之后，会得到一个output，称之为 `y` ；而从这张image的label中转化而来的target，称之为$\hat{y}$
 
+​			有了output $y$和target $\hat{y}$之后，要做的事情是计算它们之间的**cross entropy**(交叉熵)，这个做法跟我们之前做Multi-class classification的时候是一模一样的
 
 $$
 Cross \ Entropy :l(y,\hat{y})=-\sum\limits{i=1}^{10}\hat{y}i 
@@ -142,15 +145,15 @@ $$
 
 #### 3.4 Step 3：Pick the best function
 
-​		  接下来就去调整参数，让这个cross entropy越小越好，当然整个training data里面不会只有一笔data，你需要把所有data的cross entropy都sum起来，得到一个total loss L=$\sum\limits_{n=1}^Nl^nL$，得到loss function之后你要做的事情是找一组network的parameters：$\theta^*$(整个神经网络的所有参数w和b)，它可以minimize这个total loss，这组parameter对应的function就是我们最终训练好的model.
+​		  接下来就去调整参数，让这个cross entropy越小越好，当然整个training data里面不会只有一笔data，**你需要把所有data的cross entropy都sum起来**，得到一个total loss L=$\sum\limits_{n=1}^Nl^nL$，得到loss function之后你要做的事情是找一组network的parameters：$\theta^*$(整个神经网络的所有参数w和b)，它可以minimize这个total loss，这组parameter对应的function就是我们最终训练好的model.
 
 [![img](E:/Development/Typora/images/total-loss.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/total-loss.png)
 
-​		那怎么去找这个使total loss minimize的$\theta^*$呢？使用的方法就是我们的老朋友——**Gradient Descent**
+​		那怎么去找这个使**total loss minimize**的 $\theta^*$ 呢？我们的老朋友——**Gradient Descent**
 
-​		实际上在deep learning里面用gradient descent，跟在linear regression里面使用完全没有什么差别，只是function和parameter变得更复杂了而已，其他事情都是一模一样的。
+​		实际上在深度学习里面用gradient descent，跟在linear regression里面使用完全没有什么差别，只是function和parameter变得更复杂了而已，其他事情都是一模一样的。
 
-​		现在你的$\theta$里面是一大堆的weight、bias参数，先random找一个初始值，接下来去计算每一个参数对total loss的偏微分，把这些偏微分全部集合起来，就叫做gradient，有了这些偏微分以后，你就可以更新所有的参数，都减掉learning rate乘上偏微分的值，这个process反复进行下去，最终找到一组好的参数，就做完deep learning的training了
+​		现在你的$\theta$里面是一大堆的**weight**、**bias**参数，先random找一个初始值，接下来去计算每一个参数对total loss的偏微分，把这些偏微分全部集合起来，就叫做gradient，有了这些偏微分以后，你就可以更新所有的参数，都减掉learning rate乘上偏微分的值，这个process反复进行下去，最终找到一组好的参数，就做完deep learning的training了
 
 [![img](E:/Development/Typora/images/dl-gradient.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/dl-gradient.png)
 
@@ -178,9 +181,9 @@ Q：我们可不可以自己去design一个新的network structure，比如说�
 
 #### 3.7 Why Deep？
 
-​		最后还有一个问题，为什么我们要deep learning？一个很直觉的答案是，越deep，performance就越好，一般来说，随着deep learning中的layers数量增加，error率不断降低
+​		最后还有一个问题，为什么我们要deep learning？一个很直觉的答案是，越deep，performance就越好，**一般来说，随着deep learning中的layers数量增加，error率不断降低。**
 
-​		但是，稍微有一点machine learning常识的人都不会觉得太surprise，因为本来model的parameter越多，它cover的function set就越大，它的bias就越小，如果今天你有足够多的training data去控制它的variance，一个比较复杂、参数比较多的model，它performance比较好，是很正常的，那变deep有什么特别了不起的地方？
+​		但是，稍微有一点machine learning常识的人都不会觉得太surprise，==因为本来model的parameter越多，它cover的function set就越大，它的bias就越小==。如果今天你有足够多的training data去控制它的variance，一个比较复杂、参数比较多的model，它performance比较好，是很正常的，那变deep有什么特别了不起的地方？
 
 ​		甚至有一个理论是这样说的，任何连续的function，它input是一个N维的vector，output是一个M维的vector，它都可以用一个hidden layer的neural network来表示，只要你这个hidden layer的neuron够多，它可以表示成任何的function，既然一个hidden layer的neural network可以表示成任何的function，而我们在做machine learning的时候，需要的东西就只是一个function而已，那做deep有什么特殊的意义呢？
 

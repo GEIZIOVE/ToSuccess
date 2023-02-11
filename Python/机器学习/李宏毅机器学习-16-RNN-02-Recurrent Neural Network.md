@@ -22,7 +22,7 @@
 
 ​		有了损失函数后，训练其实也是用`梯度下降法`，为了计算方便，这里采取了反向传播(Backpropagation)的进阶版，`Backpropagation through time`，简称**BPTT**算法
 
-​		BPTT算法与BP算法非常类似，只是多了一些时间维度上的信息，这里不做详细介绍
+​		BPTT算法与BP算法非常类似，只是多了一些**时间维度**上的信息，这里不做详细介绍
 
 [![img](E:/Development/Typora/images/rnn-learn2.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn-learn2.png)
 
@@ -32,13 +32,13 @@
 
 [![img](E:/Development/Typora/images/rnn-learn3.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn-learn3.png)
 
-#### 1.3Error Surface
+#### 1.3Error Surface（误差曲面）
 
 ​		分析可知，RNN的error surface，即loss由于参数产生的变化，是非常陡峭崎岖的
 
 ​		下图中，$z$轴代表loss，$x$轴和$y$轴代表两个参数$w_1$和$w_2$，可以看到loss在某些地方非常平坦，在某些地方又非常的陡峭
 
-​		如果此时你的训练过程类似下图中从下往上的橙色的点，它先经过一块平坦的区域，又由于参数的细微变化跳上了悬崖，这就会导致loss上下抖动得非常剧烈
+​		如果此时你的训练过程类似下图中从**下往上的橙色的点**，它先经过一块平坦的区域，又由于参数的细微变化跳上了悬崖，这就会导致loss上下抖动得非常剧烈
 
 ​		如果你的运气特别不好，一脚踩在悬崖上，由于之前一直处于平坦区域，gradient很小，你会把参数更新的步长(learning rate)调的比较大，而踩到悬崖上导致gradient突然变得很大，这会导致参数一下子被更新了一个大步伐，导致整个就飞出去了，这就是学习曲线突然跳到无穷大的原因
 
@@ -82,7 +82,8 @@ A：RNN和LSTM对memory的处理其实是不一样的：
 -   **在RNN中，每个新的时间点，memory里的旧值都会被新值所覆盖**
 -   **在LSTM中，每个新的时间点，memory里的值会乘上$f(g_f)$与新值相加**
 
-​		对RNN来说，$w$对memory的影响每次都会被清除，而对LSTM来说，除非forget gate被打开，否则$w$对memory的影响就不会被清除，而是一直累加保留，因此它不会有梯度消失的问题
+>   ​		对RNN来说，$w$对memory的影响每次都会被清除，而对LSTM来说，除非forget gate被打开，否则$w$对memory的影响就不会被清除，而是一直累加保留，因此它不会有梯度消失的问题
+>
 
 [![img](E:/Development/Typora/images/rnn-tech.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn-tech.png)
 
@@ -109,23 +110,23 @@ A：RNN和LSTM对memory的处理其实是不一样的：
 
 #### 3.2Key term Extraction
 
-关键词分析，RNN可以分析一篇文章并提取出其中的关键词，这里需要把含有关键词标签的文章作为RNN的训练数据
+​		关键词分析，RNN可以分析一篇文章并提取出其中的关键词，这里需要把含有关键词标签的文章作为RNN的训练数据
 
 [![img](E:/Development/Typora/images/rnn-app2.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn-app2.png)
 
 #### 3.3Output is shorter
 
-如果输入输出都是sequence，且输出的sequence比输入的sequence要短，RNN可以处理这个问题
+​		如果输入输出都是sequence，且输出的sequence比输入的sequence要短，RNN可以处理这个问题
 
-以语音识别为例，输入是一段声音信号，每隔一小段时间就用1个vector来表示，因此输入为vector sequence，而输出则是character vector
+​		以语音识别为例，输入是一段声音信号，每隔一小段时间就用1个vector来表示，因此输入为vector sequence，而输出则是character vector
 
-如果依旧使用Slot Filling的方法，只能做到每个vector对应1个输出的character，识别结果就像是下图中的“好好好棒棒棒棒棒”，但这不是我们想要的，可以使用Trimming的技术把重复内容消去，剩下“好棒”
+​		如果依旧使用Slot Filling的方法，只能做到每个vector对应1个输出的character，识别结果就像是下图中的“好好好棒棒棒棒棒”，但这不是我们想要的，可以使用**Trimming**的技术把重复内容消去，剩下“好棒”
 
 [![img](E:/Development/Typora/images/rnn-app3.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn-app3.png)
 
-但“好棒”和“好棒棒”实际上是不一样的，如何区分呢？
+​		但“好棒”和“好棒棒”实际上是不一样的，如何区分呢？
 
-需要用到CTC算法，它的基本思想是，输出不只是字符，还要填充NULL，输出的时候去掉NULL就可以得到连词的效果
+​		需要用到**CTC**算法，它的基本思想是，输出不只是字符，还要填充NULL，输出的时候去掉NULL就可以得到连词的效果
 
 [![img](E:/Development/Typora/images/rnn-app4.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn-app4.png)
 
@@ -133,51 +134,51 @@ A：RNN和LSTM对memory的处理其实是不一样的：
 
 [![img](E:/Development/Typora/images/rnn-app5.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn-app5.png)
 
-#### Sequence to Sequence Learning
+#### 3.4Sequence to Sequence Learning
 
-在Seq2Seq中，RNN的输入输出都是sequence，但是长度不同
+​		在Seq2Seq中，RNN的输入输出都是sequence，但是长度不同
 
-在CTC中，input比较长，output比较短；而在Seq2Seq中，并不确定谁长谁短
+​		在CTC中，input比较长，output比较短；而在Seq2Seq中，并不确定谁长谁短
 
-比如现在要做机器翻译，将英文的word sequence翻译成中文的character sequence
+​		比如现在要做机器翻译，将英文的word sequence翻译成中文的character sequence
 
-假设在两个时间点分别输入“machine”和“learning”，则在最后1个时间点memory就存了整个句子的信息，接下来让RNN输出，就会得到“机”，把“机”当做input，并读取memory里的值，就会输出“器”，依次类推，这个RNN甚至会一直输出，不知道什么时候会停止
+​		假设在两个时间点分别输入“machine”和“learning”，则在最后1个时间点memory就存了整个句子的信息，接下来让RNN输出，就会得到“机”，把“机”当做input，并读取memory里的值，就会输出“器”，依次类推，这个RNN甚至会一直输出，不知道什么时候会停止
 
 [![img](E:/Development/Typora/images/rnn-app6.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn-app6.png)
 
-怎样才能让机器停止输出呢？
+​		怎样才能让机器停止输出呢？
 
-可以多加一个叫做“断”的symbol “===”，当输出到这个symbol时，机器就停止输出
+​		可以多加一个叫做“断”的symbol “===”，当输出到这个symbol时，机器就停止输出
 
 [![img](E:/Development/Typora/images/rnn-app7.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn-app7.png)
 
 具体的处理技巧这里不再详述
 
-#### Seq2Seq for Syntatic Parsing
+#### 3.5Seq2Seq for Syntatic Parsing
 
 Seq2Seq还可以用在句法解析上，让机器看一个句子，它可以自动生成树状的语法结构图
 
 [![img](E:/Development/Typora/images/rnn-app8.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn-app8.png)
 
-#### Seq2Seq for Auto-encoder Text
+#### 3.6Seq2Seq for Auto-encoder Text
 
-如果用bag-of-word来表示一篇文章，就很容易丢失词语之间的联系，丢失语序上的信息
+​		如果用**bag-of-word**来表示一篇文章，就很容易丢失词语之间的联系，丢失语序上的信息
 
-比如“白血球消灭了感染病”和“感染病消灭了白血球”，两者bag-of-word是相同的，但语义却是完全相反的
+​		比如“白血球消灭了感染病”和“感染病消灭了白血球”，两者bag-of-word是相同的，但语义却是完全相反的
 
 [![img](E:/Development/Typora/images/rnn-app9.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn-app9.png)
 
-这里就可以使用Seq2Seq Autoencoder，在考虑了语序的情况下，把文章编码成vector，只需要把RNN当做编码器和解码器即可
+​		这里就可以使用**Seq2Seq Autoencoder**，在考虑了语序的情况下，把文章编码成vector，只需要把RNN当做编码器和解码器即可
 
-我们输入word sequence，通过RNN变成embedded vector，再通过另一个RNN解压回去，如果能够得到一模一样的句子，则压缩后的vector就代表了这篇文章中最重要的信息
+​		我们输入word sequence，通过RNN变成embedded vector，再通过另一个RNN解压回去，如果能够得到一模一样的句子，则压缩后的vector就代表了这篇文章中最重要的信息
 
 [![img](E:/Development/Typora/images/rnn-app10.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn-app10.png)
 
-这个结构甚至可以被层次化，我们可以对句子的几个部分分别做vector的转换，最后合并起来得到整个句子的vector
+​		这个结构甚至可以被层次化，我们可以对句子的几个部分分别做vector的转换，最后合并起来得到整个句子的vector
 
 [![img](E:/Development/Typora/images/rnn-app11.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn-app11.png)
 
-#### Seq2Seq for Auto-encoder Speech
+#### 3.7Seq2Seq for Auto-encoder Speech
 
 Seq2Seq autoencoder还可以用在语音处理上，它可以把一段语音信号编码成vector
 
@@ -191,7 +192,7 @@ Seq2Seq autoencoder还可以用在语音处理上，它可以把一段语音信�
 
 [![img](E:/Development/Typora/images/rnn-app13.png)](https://gitee.com/Sakura-gh/ML-notes/raw/master/img/rnn-app13.png)
 
-#### Attention-based Model
+#### 3.8Attention-based Model
 
 除了RNN之外，Attention-based Model也用到了memory的思想
 
